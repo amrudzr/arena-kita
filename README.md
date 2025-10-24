@@ -18,6 +18,7 @@ Menjadi platform web andalan untuk memudahkan pengguna menemukan dan memesan ven
   * [6. Migrasi & Seed Database](#6-migrasi--seed-database)
   * [7. Jalankan Server](#7-jalankan-server)
 * [🔑 Akun Login (Data Dummy)](#-akun-login-data-dummy)
+* [💎 Standar Kualitas Kode (Wajib)](#-standar-kualitas-kode-wajib)
 * [📦 Alur Kerja Git & Kontribusi](#-alur-kerja-git--kontribusi)
   * [1. Branch Utama:](#1-branch-utama)
   * [2. Membuat Fitur Baru:](#2-membuat-fitur-baru)
@@ -29,9 +30,9 @@ Menjadi platform web andalan untuk memudahkan pengguna menemukan dan memesan ven
   * [2. Tambahkan 'Upstream' (Hanya sekali)](#2-tambahkan-upstream-hanya-sekali)
   * [3. Alur Kerja Harian (Setiap akan memulai fitur baru)](#3-alur-kerja-harian-setiap-akan-memulai-fitur-baru)
   * [4. Mengajukan Pull Request (PR)](#4-mengajukan-pull-request-pr)
-* [Format Nama Branch](#format-nama-branch)
-* [Format Pesan Commit (Conventional Commits)](#format-pesan-commit-conventional-commits)
-* [Format Template Pull Request (PR)](#format-template-pull-request-pr)
+* [🔌 Format Nama Branch](#-format-nama-branch)
+* [📝 Format Pesan Commit (Conventional Commits)](#-format-pesan-commit-conventional-commits)
+* [🧲 Format Template Pull Request (PR)](#-format-template-pull-request-pr)
 
 ## 🚩 Prasyarat (Wajib Terinstal)
 
@@ -41,8 +42,6 @@ Pastikan perangkat Anda memiliki *software* berikut sebelum instalasi:
 * **Composer:** `^2.0`
 * **Database:** MySQL `^5.7` (atau MariaDB yang kompatibel)
 * **Git**
-
----
 
 ## 🚀 Panduan Instalasi Lokal
 
@@ -92,7 +91,7 @@ php artisan serve
 ```
 🎉 Backend Anda sekarang berjalan! (Biasanya di http://127.0.0.1:8000)
 
-### 🔑 Akun Login (Data Dummy)
+## 🔑 Akun Login (Data Dummy)
 Setelah Anda menjalankan `migrate:fresh --seed`, Anda bisa menggunakan akun-akun berikut untuk pengujian API:
 ```Ini, TOML
 Admin / User Biasa:
@@ -104,7 +103,17 @@ Email: owner@arenakita.com
 Password: password
 ```
 
-### 📦 Alur Kerja Git & Kontribusi
+## 💎 Standar Kualitas Kode (Wajib)
+
+Repositori ini menggunakan **Laravel Pint** untuk menjaga konsistensi *style* kode. *Workflow* CI (tes otomatis) akan **GAGAL** jika kode Anda tidak rapi.
+
+Untuk menghindari ini, **selalu jalankan Pint** untuk merapikan file Anda secara otomatis **SEBELUM** Anda melakukan `git commit`.
+
+```bash
+./vendor/bin/pint
+```
+
+## 📦 Alur Kerja Git & Kontribusi
 Untuk menjaga repositori tetap bersih, ikuti alur ini:
 
 #### 1. Branch Utama:
@@ -139,7 +148,7 @@ git checkout -b feature/NAMA_FITUR
 - Buat Pull Request (PR) dari branch Anda ke develop.
 - Tunggu review dan merge dari anggota tim lain.
 
-### 🧱 Alur Kerja Fork (Untuk Kontributor Tim)
+## 🧱 Alur Kerja Fork (Untuk Kontributor Tim)
 Jika Anda lebih memilih untuk fork repositori utama (bukan push ke branch di repo utama), alur kerjanya sedikit berbeda dan membutuhkan sinkronisasi.
 
 #### 1. Fork & Clone (Hanya sekali)
@@ -194,7 +203,7 @@ git push -u origin feature/NAMA_FITUR
 
 Buka GitHub dan buat Pull Request dari `[USERNAME_ANDA]:feature/NAMA_FITUR` ke `amrudzr:develop`.
 
-### Format Nama Branch
+## 🔌 Format Nama Branch
 Menggunakan format yang konsisten membantu melacak perubahan. Gunakan prefix berikut berdasarkan jenis pekerjaan:
 
 - `feat/`: Untuk fitur baru (misal: `feat/F-2.1-daftar-venue`)
@@ -211,7 +220,7 @@ Menggunakan format yang konsisten membantu melacak perubahan. Gunakan prefix ber
 
 Contoh: `feat/F-3.1-realtime-schedule`
 
-### Format Pesan Commit (Conventional Commits)
+## 📝 Format Pesan Commit (Conventional Commits)
 
 Direkomendasikan penggunaan [Conventional Commits](https://www.conventionalcommits.org/). Ini membuat *history* Git dapat dibaca mesin dan memudahkan pelacakan perubahan.
 
@@ -253,7 +262,7 @@ Direkomendasikan penggunaan [Conventional Commits](https://www.conventionalcommi
     ```
     Closes #42
     ```
-### Format Template Pull Request (PR)
+## 🧲 Format Template Pull Request (PR)
 
 Pull Request adalah gerbang utama *review* kode. Pastikan PR Anda jelas dan informatif.
 
@@ -296,3 +305,4 @@ Perubahan ini menambahkan endpoint API baru untuk `GET /api/venues` sesuai denga
 -   [x] Saya telah memperbarui dokumentasi (jika diperlukan).
 -   [ ] Saya telah menambahkan *test case* (jika diperlukan).
 -   [ ] Semua tes *existing* lolos.
+```
