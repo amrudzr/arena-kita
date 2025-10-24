@@ -29,38 +29,27 @@ jobs:
     - name: Install Composer dependencies
       run: composer install --prefer-dist --no-progress
 
-    # 4. (Opsional) Setup Node.js untuk compile asset
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-    - name: Install NPM dependencies
-      run: npm install
-    - name: Build assets
-      run: npm run build
-
-    # 5. Siapkan Environment untuk Testing
+    # 4. Siapkan Environment untuk Testing
     - name: Prepare Laravel Environment
       run: |
         cp .env.example .env
         php artisan key:generate
 
-    # 6. Konfigurasi .env untuk SQLite (agar tes cepat)
+    # 5. Konfigurasi .env untuk SQLite (agar tes cepat)
     - name: Configure .env for testing
       run: |
         sed -i 's/DB_CONNECTION=mysql/DB_CONNECTION=sqlite/' .env
         sed -i 's/DB_DATABASE=.*/DB_DATABASE=database\/database.sqlite/' .env
         touch database/database.sqlite
 
-    # 7. Jalankan Migrasi
+    # 6. Jalankan Migrasi
     - name: Run Database Migrations
       run: php artisan migrate
 
-    # 8. Cek Kualitas Kode (Laravel Pint)
+    # 7. Cek Kualitas Kode (Laravel Pint)
     - name: Run Laravel Pint
       run: ./vendor/bin/pint --test
 
-    # 9. Jalankan Tests (PHPUnit / Pest)
+    # 8. Jalankan Tests (PHPUnit / Pest)
     - name: Run Tests
       run: php artisan test
