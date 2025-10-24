@@ -268,8 +268,6 @@ Direkomendasikan penggunaan [Conventional Commits](https://www.conventionalcommi
 
 Pull Request adalah gerbang utama *review* kode. Pastikan PR Anda jelas dan informatif.
 
-Anda bisa membuat file `PULL_REQUEST_TEMPLATE.md` di folder `.github/` proyek Anda agar template ini muncul otomatis.
-
 **Template:**
 
 ```markdown
