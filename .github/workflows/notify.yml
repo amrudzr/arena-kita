@@ -1,35 +1,74 @@
 name: Telegram Notifier
 
-# Trigger: Jalankan workflow ini setiap kali ada 'push'
-# ke branch 'main' atau 'develop'
 on:
   push:
     branches:
       - main
       - develop
+      - 'feat/**'
+      - 'fix/**'
+      - 'docs/**'
+      - 'refactor/**'
+      - 'test/**'
+      - 'chore/**'
+  pull_request:
+    types: [ opened, closed ]
 
 jobs:
-  send-telegram-message:
+  send-notification:
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Send Telegram message on push
-        # Kita gunakan Action yang sudah jadi
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Send Telegram notification on push
+        if: github.event_name == 'push'
         uses: appleboy/telegram-action@master
         with:
-          # Ambil "kunci" rahasia dari brankas GitHub
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          
-          # Ini adalah isi pesan yang akan dikirim.
-          # Anda bisa mengkustomisasinya sesuka hati.
+          format: markdown
           message: |
-            🚀 **Push Baru ke Repositori ArenaKita**
+            **🚀 Push ke Branch `${{ github.ref_name }}`**
             
-            **Branch:** ${{ github.ref_name }}
-            **Pelaku:** ${{ github.actor }}
+            **Repo:** `${{ github.repository }}`
+            **Author:** `${{ github.actor }}`
+            **Commit:** `${{ github.event.head_commit.message }}`
             
-            **Pesan Commit:**
-            ${{ github.event.head_commit.message }}
+            Lihat perubahan: ${{ github.event.compare }}
+
+      - name: Send Telegram notification on PR opened
+        if: github.event_name == 'pull_request' && github.event.action == 'opened'
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          format: markdown
+          message: |
+            **📬 Pull Request Baru**
             
-            Lihat perubahan:
-            ${{ github.event.head_commit.url }}
+            **Repo:** `${{ github.repository }}`
+            **Author:** `${{ github.actor }}`
+            **Judul:** `${{ github.event.pull_request.title }}`
+            **Dari:** `${{ github.event.pull_request.head.ref }}`
+            **Ke:** `${{ github.event.pull_request.base.ref }}`
+            
+            Lihat PR: ${{ github.event.pull_request.html_url }}
+      
+      - name: Send Telegram notification on PR closed
+        if: github.event_name == 'pull_request' && github.event.action == 'closed'
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          format: markdown
+          message: |
+            **✅ Pull Request Ditutup**
+            
+            **Repo:** `${{ github.repository }}`
+            **Author:** `${{ github.actor }}`
+            **Judul:** `${{ github.event.pull_request.title }}`
+            **Status:** ${{ github.event.pull_request.merged && 'Digabung (Merged)' || 'Ditolak (Closed)' }}
+            
+            Lihat PR: ${{ github.event.pull_request.html_url }}
