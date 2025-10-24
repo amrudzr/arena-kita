@@ -1,5 +1,7 @@
 # ArenaKita - Backend (Laravel API)
 
+[![ArenaKita CI](https://github.com/amrudzr/arena-kita/actions/workflows/ci.yml/badge.svg)](https://github.com/amrudzr/arena-kita/actions/workflows/ci.yml)
+
 Ini adalah repositori resmi untuk layanan backend Proyek ArenaKita. Proyek ini berfungsi sebagai API (headless) yang akan dikonsumsi oleh frontend Next.js.
 
 ## Visi Proyek
