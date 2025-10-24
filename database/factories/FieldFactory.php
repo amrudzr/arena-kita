@@ -19,7 +19,7 @@ class FieldFactory extends Factory
     {
         return [
             'venue_id' => Venue::factory(),
-            'field_name' => 'Lapangan ' . $this->faker->randomElement(['A', 'B', 'C', '1', '2']),
+            'field_name' => 'Lapangan '.$this->faker->randomElement(['A', 'B', 'C', '1', '2']),
             'sport_type' => $this->faker->randomElement(['Futsal', 'Badminton', 'Basket', 'Voli']),
             'field_photo_url' => $this->faker->imageUrl(640, 480, 'sports court', true),
         ];

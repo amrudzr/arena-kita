@@ -2,18 +2,18 @@
 
 namespace Database\Seeders;
 
-use Carbon\Carbon;
-use App\Models\User;
+use App\Models\Booking;
 use App\Models\Field;
 use App\Models\Owner;
-use App\Models\Venue;
-use App\Models\Booking;
-use App\Models\VenuePhoto;
-use App\Models\Transaction;
 use App\Models\PricingScheme;
+use App\Models\Transaction;
+use App\Models\User;
+use App\Models\Venue;
+use App\Models\VenuePhoto;
+use Carbon\Carbon;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class DatabaseSeeder extends Seeder
 {
@@ -69,6 +69,7 @@ class DatabaseSeeder extends Seeder
         // Failsafe jika data gagal dibuat
         if ($allUsers->isEmpty() || $allPricingSchemes->isEmpty()) {
             $this->command->warn('Tidak ada User atau Pricing Scheme. Booking tidak dibuat.');
+
             return;
         }
 

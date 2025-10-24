@@ -18,8 +18,8 @@ class VenueFactory extends Factory
     public function definition(): array
     {
         return [
-            'owner_id' => Owner::factory(), 
-            'venue_name' => 'Venue ' . $this->faker->company(),
+            'owner_id' => Owner::factory(),
+            'venue_name' => 'Venue '.$this->faker->company(),
             'description' => $this->faker->paragraph(),
             'address' => $this->faker->address(),
             'city' => $this->faker->city(),

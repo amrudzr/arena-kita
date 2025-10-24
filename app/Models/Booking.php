@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Booking extends Model
 {
     use HasFactory;
-    
+
     protected $guarded = [];
 
     protected function casts(): array
@@ -20,7 +20,7 @@ class Booking extends Model
             'end_time' => 'datetime:H:i',
         ];
     }
-    
+
     public function user()
     {
         return $this->belongsTo(User::class);

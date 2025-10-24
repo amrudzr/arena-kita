@@ -18,12 +18,12 @@ class PricingSchemeFactory extends Factory
     public function definition(): array
     {
         $duration = $this->faker->randomElement([60, 90, 120]);
-        
+
         return [
             'field_id' => Field::factory(),
             'duration_minutes' => $duration,
             'price' => $this->faker->numberBetween(50, 200) * 1000,
-            'description' => 'Sesi ' . ($duration / 60) . ' Jam',
+            'description' => 'Sesi '.($duration / 60).' Jam',
         ];
     }
 }

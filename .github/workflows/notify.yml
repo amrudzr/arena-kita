@@ -1,0 +1,35 @@
+name: Telegram Notifier
+
+# Trigger: Jalankan workflow ini setiap kali ada 'push'
+# ke branch 'main' atau 'develop'
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  send-telegram-message:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Telegram message on push
+        # Kita gunakan Action yang sudah jadi
+        uses: appleboy/telegram-action@master
+        with:
+          # Ambil "kunci" rahasia dari brankas GitHub
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          
+          # Ini adalah isi pesan yang akan dikirim.
+          # Anda bisa mengkustomisasinya sesuka hati.
+          message: |
+            🚀 **Push Baru ke Repositori ArenaKita**
+            
+            **Branch:** ${{ github.ref_name }}
+            **Pelaku:** ${{ github.actor }}
+            
+            **Pesan Commit:**
+            ${{ github.event.head_commit.message }}
+            
+            Lihat perubahan:
+            ${{ github.event.head_commit.url }}

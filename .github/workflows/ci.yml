@@ -1,0 +1,55 @@
+name: ArenaKita CI
+
+# Trigger: Jalankan saat ada push atau PR ke branch main & develop
+on:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main", "develop" ]
+
+jobs:
+  # Nama job-nya 'laravel-tests', sama seperti yang Anda set di Ruleset
+  laravel-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Checkout kode dari repositori
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # 2. Setup PHP
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2' # Sesuaikan dengan versi PHP Anda
+        extensions: dom, curl, libxml, mbstring, zip, pdo, pdo_sqlite, bcmath
+        tools: composer:v2
+
+    # 3. Install Composer dependencies
+    - name: Install Composer dependencies
+      run: composer install --prefer-dist --no-progress
+
+    # 4. Siapkan Environment untuk Testing
+    - name: Prepare Laravel Environment
+      run: |
+        cp .env.example .env
+        php artisan key:generate
+
+    # 5. Konfigurasi .env untuk SQLite (agar tes cepat)
+    - name: Configure .env for testing
+      run: |
+        sed -i 's/DB_CONNECTION=mysql/DB_CONNECTION=sqlite/' .env
+        sed -i 's/DB_DATABASE=.*/DB_DATABASE=database\/database.sqlite/' .env
+        touch database/database.sqlite
+
+    # 6. Jalankan Migrasi
+    - name: Run Database Migrations
+      run: php artisan migrate
+
+    # 7. Cek Kualitas Kode (Laravel Pint)
+    - name: Run Laravel Pint
+      run: ./vendor/bin/pint --test
+
+    # 8. Jalankan Tests (PHPUnit / Pest)
+    - name: Run Tests
+      run: php artisan test
