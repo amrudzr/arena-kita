@@ -16,3 +16,7 @@ Route::prefix('v1')->group(function () {
         Route::delete('/{venue}', 'destroy');
     });
 });
+
+Route::middleware(['auth:owner'])->get('/owner', function (Request $request) {
+    return $request->user('owner');
+});
