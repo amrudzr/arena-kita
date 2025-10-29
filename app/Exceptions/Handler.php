@@ -41,7 +41,7 @@ class Handler extends ExceptionHandler
     {
         // Add custom API exception rendering
         $this->renderable(function (Throwable $e, $request) {
-            
+
             // Only format responses for API requests
             if ($request->is('api/*')) {
 
@@ -53,8 +53,8 @@ class Handler extends ExceptionHandler
                 // 422 - Validation Failed (from FormRequest)
                 if ($e instanceof ValidationException) {
                     return $this->sendError(
-                        'Validasi gagal', 
-                        $e->errors(), 
+                        'Validasi gagal',
+                        $e->errors(),
                         Response::HTTP_UNPROCESSABLE_ENTITY
                     );
                 }
@@ -62,15 +62,15 @@ class Handler extends ExceptionHandler
                 // 401 - Unauthenticated
                 if ($e instanceof AuthenticationException) {
                     return $this->sendError(
-                        'Tidak terautentikasi', 
-                        [], 
+                        'Tidak terautentikasi',
+                        [],
                         Response::HTTP_UNAUTHORIZED
                     );
                 }
 
                 // 500 - Other Server Errors
                 $errorMessage = app()->isProduction() ? 'Terjadi kesalahan pada server' : $e->getMessage();
-                
+
                 // Prepare context for logging
                 $context = [
                     'context' => 'GlobalExceptionHandler', // Mark as globally caught
