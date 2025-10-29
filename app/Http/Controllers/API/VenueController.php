@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Facades\VenueService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\DestroyVenueRequest;
 use App\Http\Requests\API\StoreVenueRequest;
@@ -54,13 +55,13 @@ class VenueController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => 'Venue created successfully',
+                'message' => 'Venue berhasil ditambahkan',
                 'data' => $venue
             ], 201);
         } catch (Exception $e) {
             return response()->json([
                 'status' => false,
-                'message' => 'Error creating venue: ' . $e->getMessage(),
+                'message' => 'Error menambah venue: ' . $e->getMessage(),
                 'data' => null
             ], 500);
         }
