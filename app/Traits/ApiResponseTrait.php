@@ -10,10 +10,6 @@ trait ApiResponseTrait
 {
     /**
      * Send a success response without data.
-     *
-     * @param string $message
-     * @param int $code
-     * @return \Illuminate\Http\JsonResponse
      */
     protected function sendSuccess(string $message = 'Sukses', int $code = Response::HTTP_OK): JsonResponse
     {
@@ -26,10 +22,7 @@ trait ApiResponseTrait
     /**
      * Send a success response with data.
      *
-     * @param mixed $data
-     * @param string $message
-     * @param int $code
-     * @return \Illuminate\Http\JsonResponse
+     * @param  mixed  $data
      */
     protected function sendSuccessWithData($data, string $message = 'Sukses', int $code = Response::HTTP_OK): JsonResponse
     {
@@ -42,11 +35,6 @@ trait ApiResponseTrait
 
     /**
      * Send a formatted error response.
-     *
-     * @param string $message
-     * @param array $errors
-     * @param int $code
-     * @return \Illuminate\Http\JsonResponse
      */
     protected function sendError(string $message = 'Terjadi kesalahan', array $errors = [], int $code = Response::HTTP_BAD_REQUEST): JsonResponse
     {
@@ -55,7 +43,7 @@ trait ApiResponseTrait
             'message' => $message,
         ];
 
-        if (!empty($errors)) {
+        if (! empty($errors)) {
             $response['errors'] = $errors;
         }
 
@@ -64,9 +52,6 @@ trait ApiResponseTrait
 
     /**
      * Send a 404 not found response.
-     *
-     * @param string $message
-     * @return \Illuminate\Http\JsonResponse
      */
     protected function sendNotFound(string $message = 'Data tidak ditemukan'): JsonResponse
     {
@@ -75,20 +60,13 @@ trait ApiResponseTrait
 
     /**
      * Send a 500 internal server error response and log the exception.
-     *
-     * @param \Exception $exception
-     * @param string $message
-     * @param int $code
-     * @param array $context
-     * @return \Illuminate\Http\JsonResponse
      */
     protected function sendInternalError(
-        \Exception $exception, 
-        string $message = 'Terjadi kesalahan pada server', 
+        \Exception $exception,
+        string $message = 'Terjadi kesalahan pada server',
         int $code = Response::HTTP_INTERNAL_SERVER_ERROR,
         array $context = [] // Custom context
-    ): JsonResponse
-    {
+    ): JsonResponse {
         // Prepare basic log data from the exception
         $logData = [
             'file' => $exception->getFile(), // File where the error occurred
@@ -100,7 +78,7 @@ trait ApiResponseTrait
 
         // Log the error with the main exception message and full context
         Log::error($exception->getMessage(), $fullContext);
-        
+
         return $this->sendError($message, [], $code);
     }
 }
