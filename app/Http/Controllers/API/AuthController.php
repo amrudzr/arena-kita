@@ -1,65 +1,105 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\Auth\LoginRequest;
+use App\Http\Requests\Api\Auth\RegisterRequest;
+use App\Services\AuthService;
+use App\Traits\ApiResponseTrait;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    use ApiResponseTrait;
+
+    protected $authService;
+
+    public function __construct(AuthService $authService)
     {
-        //
+        $this->authService = $authService;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function registerUser(RegisterRequest $request)
     {
-        //
+        try {
+            $user = $this->authService->registerUser($request->validated());
+
+            return $this->sendSuccessWithData(
+                $user,
+                'Registrasi berhasil.',
+                Response::HTTP_CREATED
+            );
+        } catch (Exception $e) {
+            $context = [
+                'context' => __METHOD__,
+                'request_data' => $request->except('password'),
+            ];
+
+            return $this->sendInternalError($e, 'Gagal melakukan registrasi.', 500, $context);
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function loginUser(LoginRequest $request)
     {
-        //
+        try {
+            $result = $this->authService->attemptLogin('api_user', $request->validated());
+
+            return $this->sendSuccessWithData([
+                'token' => $result['token'],
+                'user' => $result['user'],
+            ], 'Login berhasil.');
+
+        } catch (ValidationException $e) {
+            throw $e;
+        } catch (Exception $e) {
+            $context = [
+                'context' => __METHOD__,
+                'email' => $request->email,
+            ];
+
+            return $this->sendInternalError($e, 'Gagal melakukan login.', 500, $context);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function loginOwner(LoginRequest $request)
     {
-        //
+        try {
+            $result = $this->authService->attemptLogin('api_owner', $request->validated());
+
+            return $this->sendSuccessWithData([
+                'token' => $result['token'],
+                'user' => $result['user'],
+            ], 'Login Owner berhasil.');
+
+        } catch (ValidationException $e) {
+            throw $e;
+        } catch (Exception $e) {
+            $context = [
+                'context' => __METHOD__,
+                'email' => $request->email,
+            ];
+
+            return $this->sendInternalError($e, 'Gagal melakukan login.', 500, $context);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function logout(Request $request)
     {
-        //
-    }
+        try {
+            $request->user()?->currentAccessToken()?->delete();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+            return $this->sendSuccess('Logout berhasil.');
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        } catch (Exception $e) {
+            $context = [
+                'context' => __METHOD__,
+            ];
+
+            return $this->sendInternalError($e, 'Gagal logout.', 500, $context);
+        }
     }
 }

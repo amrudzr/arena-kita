@@ -10,7 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class Owner extends Authenticatable
 {
-    use HasFactory, HasApiTokens, Notifiable, SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     protected $guarded = [];
 

@@ -3,8 +3,8 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\Auth;
 
 class AuthService
 {
@@ -17,24 +17,28 @@ class AuthService
             'password' => $validatedData['password'],
             'role' => 'user',
         ]);
+
         return $user;
     }
 
     public function attemptLogin(string $guard, array $credentials)
     {
-        if (! Auth::guard($guard)->attempt($credentials)) {
+        $providerName = config("auth.guards.$guard.provider");
+        $modelClass = config("auth.providers.$providerName.model");
+
+        $user = $modelClass::where('email', $credentials['email'])->first();
+
+        if (! $user || ! Hash::check($credentials['password'], $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['Email atau password salah.'],
             ]);
         }
 
-        $user = Auth::guard($guard)->user();
-
-        $plainTextToken = $user->createToken('auth-token-' . $user->id)->plainTextToken;
+        $plainTextToken = $user->createToken('auth-token-'.$user->id)->plainTextToken;
 
         return [
             'user' => $user,
-            'token' => $plainTextToken
+            'token' => $plainTextToken,
         ];
     }
 }
