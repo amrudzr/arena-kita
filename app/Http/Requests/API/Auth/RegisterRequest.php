@@ -29,6 +29,7 @@ class RegisterRequest extends FormRequest
             'password' => ['required', 'confirmed', Password::min(8)],
         ];
     }
+<<<<<<< HEAD
 
     /**
      * Get the error messages for the defined validation rules.
@@ -48,4 +49,6 @@ class RegisterRequest extends FormRequest
             'password.min' => 'Password minimal harus 8 karakter.',
         ];
     }
+=======
+>>>>>>> f0b3745bea04d25cfcc0d3a6743f7c5afce1862a
 }

@@ -26,6 +26,7 @@ class LoginRequest extends FormRequest
             'password' => 'required|string',
         ];
     }
+<<<<<<< HEAD
 
     /**
      * Get the error messages for the defined validation rules.
@@ -40,4 +41,6 @@ class LoginRequest extends FormRequest
             'password.required' => 'Password wajib diisi.',
         ];
     }
+=======
+>>>>>>> f0b3745bea04d25cfcc0d3a6743f7c5afce1862a
 }
