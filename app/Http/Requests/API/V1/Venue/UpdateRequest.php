@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\API;
+namespace App\Http\Requests\API\V1\Venue;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class UpdateVenueRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     public function rules(): array
     {

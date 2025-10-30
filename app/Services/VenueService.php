@@ -11,8 +11,19 @@ class VenueService
 
     }
 
-    public function storeVenue(Request $request)
+    public function createVenue(array $request)
     {
+        $owner = auth()->guard('owner')->user();
+        return $owner->venues()->create($request);
+    }
 
+    public function updateVenue(array $request, $venue)
+    {
+        return $venue->update($request);
+    }
+
+    public function deleteVenue($venue)
+    {
+        return $venue->delete();
     }
 }

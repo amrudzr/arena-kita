@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Requests\API;
+namespace App\Http\Requests\API\V1\Venue;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class DestroyVenueRequest extends FormRequest
+class DestroyRequest extends FormRequest
 {
     public function rules(): array
     {
