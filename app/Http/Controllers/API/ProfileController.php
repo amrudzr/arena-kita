@@ -2,38 +2,51 @@
 
 namespace App\Http\Controllers\API;
 
+use Exception;
 use Illuminate\Http\Request;
+use App\Services\ProfileService;
 use App\Traits\ApiResponseTrait;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\API\Profile\UpdateRequest;
 
 class ProfileController extends Controller
 {
     use ApiResponseTrait;
 
-    public function __construct() {
+    protected $profileService;
 
+    public function __construct(ProfileService $profileService)
+    {
+        $this->profileService = $profileService;
     }
 
     public function show(Request $request)
     {
-        // Middleware 'auth:api_user' akan memastikan
-        // $request->user() berisi data user yang login.
         return $this->sendSuccessWithData(
             $request->user(),
             'Data profil berhasil diambil.'
         );
     }
 
-    /**
-     * Memperbarui data profil user yang sedang login.
-     * Sesuai F-1.4
-     */
-    public function update(Request $request) // <-- Nanti akan kita ganti dengan UpdateProfileRequest
+    public function update(UpdateRequest $request)
     {
-        // TODO: Panggil ProfileService untuk validasi dan update data
-        // (Akan diimplementasikan di tahap selanjutnya)
+        
+        try {
+            $user = $request->user(); 
 
-        // Placeholder response
-        return $this->sendSuccess('Profil berhasil diperbarui.');
+            $updatedUser = $this->profileService->updateProfile($user, $request->validated());
+
+            return $this->sendSuccessWithData(
+                $updatedUser,
+                'Profil berhasil diperbarui.'
+            );
+
+        } catch (Exception $e) {
+            $context = [
+                'context' => __METHOD__,
+                'user_id' => $request->user()->id,
+            ];
+            return $this->sendInternalError($e, 'Gagal memperbarui profil.', 500, $context);
+        }
     }
 }
