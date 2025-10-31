@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Auth\LoginRequest;
@@ -58,7 +58,7 @@ class AuthController extends Controller
         } catch (Exception $e) {
             $context = [
                 'context' => __METHOD__,
-                'email' => $request->email,
+                'email' => $request->input('email'),
             ];
 
             return $this->sendInternalError($e, 'Gagal melakukan login.', 500, $context);
@@ -80,7 +80,7 @@ class AuthController extends Controller
         } catch (Exception $e) {
             $context = [
                 'context' => __METHOD__,
-                'email' => $request->email,
+                'email' => $request->input('email'),
             ];
 
             return $this->sendInternalError($e, 'Gagal melakukan login.', 500, $context);
