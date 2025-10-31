@@ -26,10 +26,13 @@ class AuthController extends Controller
     public function registerUser(RegisterRequest $request)
     {
         try {
-            $user = $this->authService->registerUser($request->validated());
+            $result = $this->authService->registerUser($request->validated());
 
             return $this->sendSuccessWithData(
-                $user,
+                [
+                    'user' => $result['user'],
+                    'token' => $result['token'],
+                ],
                 'Registrasi berhasil.',
                 Response::HTTP_CREATED
             );

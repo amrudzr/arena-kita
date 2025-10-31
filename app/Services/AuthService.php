@@ -18,7 +18,12 @@ class AuthService
             'role' => 'user',
         ]);
 
-        return $user;
+        $plainTextToken = $user->createToken('auth-token-'.$user->id)->plainTextToken;
+
+        return [
+            'user' => $user,
+            'token' => $plainTextToken,
+        ];
     }
 
     public function attemptLogin(string $guard, array $credentials)
