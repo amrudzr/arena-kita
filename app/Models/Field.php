@@ -10,7 +10,19 @@ class Field extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $guarded = [];
+    protected $fillable = [
+        'venue_id',
+        'field_name',
+        'sport_type',
+        'field_photo_url',
+        'status'
+    ];
+
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+        'deleted_at' => 'datetime'
+    ];
 
     public function venue()
     {
