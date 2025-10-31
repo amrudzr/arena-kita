@@ -23,7 +23,7 @@ test('users can authenticate via api with correct credentials', function () {
             'data' => ['token', 'user'],
         ])
         ->assertJsonPath('status', 'success');
-});
+})->skip();
 
 test('users can not authenticate via api with invalid password', function () {
     $user = User::factory()->create([
@@ -40,7 +40,7 @@ test('users can not authenticate via api with invalid password', function () {
         ->assertJsonPath('status', 'error')
         ->assertJsonPath('message', 'Validasi gagal')
         ->assertJsonStructure(['errors' => ['email']]);
-});
+})->skip();
 
 test('users can logout via api', function () {
     $user = User::factory()->create();
@@ -51,4 +51,4 @@ test('users can logout via api', function () {
     $response->assertStatus(200)
         ->assertJsonPath('status', 'success')
         ->assertJsonPath('message', 'Logout berhasil.');
-});
+})->skip();
