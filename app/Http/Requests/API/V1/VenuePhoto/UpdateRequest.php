@@ -17,6 +17,6 @@ class UpdateRequest extends FormRequest
 
     public function authorize(): bool
     {
-        return Auth::guard('owner')->check();
+        return Auth::guard('api_owner')->check();
     }
 }

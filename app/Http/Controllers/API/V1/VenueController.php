@@ -50,7 +50,7 @@ class VenueController extends Controller
 
     public function update(UpdateRequest $request, Venue $venue)    {
         try {
-            $owner = $request->user('owner');
+            $owner = $request->user('api_owner');
             if ($venue->owner_id !== $owner->id) return $this->sendError('Venue tidak bisa diubah.', [], 400);
             $update = $this->venueService->updateVenue($request->validated(), $venue);
             return $this->sendSuccessWithData($update, 'Venue berhasil diupdate.', 200);
@@ -62,7 +62,7 @@ class VenueController extends Controller
     public function destroy(DestroyRequest $request, Venue $venue)
     {
         try {
-            $owner = $request->user('owner');
+            $owner = $request->user('api_owner');
             if ($venue->owner_id !== $owner->id) return $this->sendError('Venue tidak bisa dihapus.', [], 400);
             $delete = $this->venueService->deleteVenue($venue);
             return $this->sendSuccessWithData($delete, 'Venue berhasil dihapus.', 200);

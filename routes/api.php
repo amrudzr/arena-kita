@@ -17,9 +17,7 @@ Route::prefix('v1')->group(function () {
         Route::post('/owner/login', 'loginOwner');
         Route::post('/logout', 'logout')->middleware(['auth:api_user,api_owner']);
     });
-});
 
-Route::prefix('v1')->group(function () {
     Route::prefix('venues')->controller(VenueController::class)->group(function () {
         Route::get('/', 'index');
         Route::post('/', 'store');
@@ -35,8 +33,4 @@ Route::prefix('v1')->group(function () {
             });
         });
     });
-});
-
-Route::middleware(['auth:owner'])->get('/owner', function (Request $request) {
-    return $request->user('owner');
 });

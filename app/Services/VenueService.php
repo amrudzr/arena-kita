@@ -11,7 +11,7 @@ class VenueService
 
     public function createVenue(array $request)
     {
-        $owner = auth()->guard('owner')->user();
+        $owner = auth()->guard('api_owner')->user();
         return $owner->venues()->create($request);
     }
 
