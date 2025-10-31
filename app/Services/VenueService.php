@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-use Illuminate\Http\Request;
-
 class VenueService
 {
     public function __construct()

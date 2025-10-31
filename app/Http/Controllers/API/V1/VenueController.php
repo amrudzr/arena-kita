@@ -5,10 +5,10 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Controllers\Controller;
 use App\Traits\ApiResponseTrait;
 use App\Services\VenueService;
+use App\Models\Venue;
 use App\Http\Requests\API\V1\Venue\DestroyRequest;
 use App\Http\Requests\API\V1\Venue\StoreRequest;
 use App\Http\Requests\API\V1\Venue\UpdateRequest;
-use App\Models\Venue;
 use Exception;
 
 
