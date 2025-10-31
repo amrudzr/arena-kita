@@ -2,9 +2,10 @@
 
 namespace App\Services;
 
+use Exception;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
-use Exception;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileService
 {
@@ -12,18 +13,22 @@ class ProfileService
     {
         return DB::transaction(function () use ($user, $validatedData) {
             
-            // (Nanti di sini kita tambahkan logic untuk upload foto)
-            // if (isset($validatedData['profile_photo'])) {
-            //     // 1. Hapus foto lama (jika ada)
-            //     // 2. Upload foto baru ke storage
-            //     // 3. Simpan URL baru ke $validatedData['profile_photo_url']
-            // }
-
-            $user->update([
+            $updateData = [
                 'full_name' => $validatedData['full_name'],
                 'phone_number' => $validatedData['phone_number'] ?? null,
-                // 'profile_photo_url' => $validatedData['profile_photo_url'] ?? $user->profile_photo_url,
-            ]);
+            ];
+
+            if (isset($validatedData['profile_photo'])) {
+                if ($user->getRawOriginal('profile_photo_url')) {
+                    Storage::disk('public')->delete($user->getRawOriginal('profile_photo_url'));
+                }
+                
+                $file = $validatedData['profile_photo'];
+                $path = $file->store('profile_photos', 'public');
+                $updateData['profile_photo_url'] = $path;
+            }
+            
+            $user->update($updateData);
 
             return $user;
         });

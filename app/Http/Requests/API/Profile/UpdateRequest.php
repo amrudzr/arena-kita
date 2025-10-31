@@ -27,7 +27,7 @@ class UpdateRequest extends FormRequest
         return [
             'full_name' => 'required|string|max:100',
             'phone_number' => 'nullable|string|max:20',
-            // 'profile_photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', 
+            'profile_photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', 
         ];
     }
 
@@ -42,6 +42,9 @@ class UpdateRequest extends FormRequest
             'full_name.required' => 'Nama lengkap wajib diisi.',
             'full_name.max' => 'Nama lengkap tidak boleh lebih dari 100 karakter.',
             'phone_number.max' => 'Nomor telepon tidak boleh lebih dari 20 karakter.',
+            'profile_photo.image' => 'File harus berupa gambar.',
+            'profile_photo.mimes' => 'Format gambar harus jpg, jpeg, atau png.',
+            'profile_photo.max' => 'Ukuran gambar tidak boleh lebih dari 2MB.',
         ];
     }
 }
