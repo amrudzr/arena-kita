@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\API\Profile;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateRequest extends FormRequest
 {
@@ -27,7 +27,7 @@ class UpdateRequest extends FormRequest
         return [
             'full_name' => 'required|string|max:100',
             'phone_number' => 'nullable|string|max:20',
-            'profile_photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', 
+            'profile_photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ];
     }
 
