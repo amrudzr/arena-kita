@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\ProfileController;
 use App\Http\Controllers\API\V1\VenueController;
 use App\Http\Controllers\API\V1\VenuePhotoController;
 use Illuminate\Http\Request;
@@ -31,6 +32,13 @@ Route::prefix('v1')->group(function () {
                 Route::put('/{photo}', 'update');
                 Route::delete('/{photo}', 'destroy');
             });
+        });
+    });
+
+    Route::middleware('auth:api_user')->group(function () {
+        Route::controller(ProfileController::class)->group(function () {
+            Route::get('/profile', 'show');
+            Route::post('/profile', 'update');
         });
     });
 });
