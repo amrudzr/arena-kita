@@ -26,7 +26,7 @@ class FieldService
         return $field;
     }
 
-    public function updateField(Field $field, array $validatedData): Field
+    public function updateField(Field $field, array $validatedData)
     {
         $updateData = $validatedData;
 

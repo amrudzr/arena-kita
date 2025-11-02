@@ -69,7 +69,10 @@ class FieldController extends Controller
             return $this->sendSuccess('Lapangan berhasil dihapus.');
 
         } catch (Exception $e) {
-            $context = ['context' => __METHOD__, 'field_id' => $field->id];
+            $context = [
+                'context' => __METHOD__,
+                'field_id' => $field->id
+            ];
 
             return $this->sendInternalError($e, 'Gagal menghapus lapangan.', 500, $context);
         }
