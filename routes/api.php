@@ -23,4 +23,13 @@ Route::prefix('v1')->group(function () {
             Route::post('/profile', 'update');
         });
     });
+
+    Route::middleware('auth:api_owner')->group(function () {
+        Route::controller(FieldController::class)->group(function () {
+            Route::post('venues/{venue}/fields', 'store');
+            Route::put('fields/{field}', 'update');
+            Route::delete('fields/{field}', 'destroy');
+        });
+
+    });
 });
