@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\VenuePhoto;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
@@ -18,17 +19,21 @@ class VenuePhotoService
         return $venue->venuePhoto()->create($photoData, $venue);
     }
 
-    public function updatePhoto(array $photoData, $photo)
+    public function updatePhoto(array $photoData, VenuePhoto $photo)
     {
-        $currentPath = $photo->photo_url;
         if (isset($photoData['photo_url']) && $photoData['photo_url'] instanceof UploadedFile) {
-            if (!empty($currentPath) && Storage::disk('public')->exists($currentPath)) {
-                Storage::disk('public')->delete($currentPath);
+            if ($oldPath = $photo->getRawOriginal('photo_url')) {
+                Storage::disk('public')->delete($oldPath);
             }
-            $currentPath = $photoData['photo_url']->store('venue', 'public');
+            $newPath = $photoData['photo_url']->store('venue', 'public');
+            $photoData['photo_url'] = $newPath;
+
+            $photo->update(['photo_url' => $newPath]);
         }
-        $photoData['photo_url'] = $currentPath;
-        return $photo->update($photoData);
+        $otherData = $photoData;
+        unset($otherData['photo_url']);
+        if (!empty($otherData)) $photo->update($otherData);
+        return $photo->refresh();
     }
 
     public function deletePhoto($photo)

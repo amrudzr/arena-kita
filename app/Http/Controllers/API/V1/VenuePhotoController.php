@@ -11,6 +11,7 @@ use App\Models\VenuePhoto;
 use App\Models\Venue;
 use App\Http\Requests\API\V1\VenuePhoto\StoreRequest;
 use Exception;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @group Venue Photo Management

@@ -9,8 +9,7 @@ class StoreRequest extends FormRequest
 {
     public function rules(): array
     {
-        return [
-            'photo_url' => 'required|image|max:5120', // Maksimum 5MB
+        return ['photo_url' => 'required|image|mimes:png,jpg,jpeg|max:5120', // Maksimum 5MB
         ];
     }
 

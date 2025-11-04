@@ -10,13 +10,21 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'photo_url' => 'sometimes|image|max:5120', // Maksimum 5MB
-            'venue_id' => 'sometimes|exists:venues,id',
+            'photo_url' => 'required|image|mimes:png,jpg,jpeg|max:5120', // Maksimum 5MB
         ];
     }
 
     public function authorize(): bool
     {
-        return Auth::guard('api_owner')->check();
+        return Auth::guard('api_owner')->id();
+    }
+
+    public function messages(): array
+    {
+        return [
+            'photo_url.required' => 'Foto venue wajib diunggah.',
+            'photo_url.image' => 'File yang diunggah harus berupa gambar.',
+            'photo_url.max' => 'Ukuran foto venue maksimal 5MB.',
+        ];
     }
 }
