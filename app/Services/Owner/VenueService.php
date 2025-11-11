@@ -4,14 +4,12 @@ namespace App\Services\Owner;
 
 class VenueService
 {
-    public function __construct()
-    {
-
-    }
+    public function __construct() {}
 
     public function createVenue(array $request)
     {
         $owner = auth()->guard('api_owner')->user();
+
         return $owner->venues()->create($request);
     }
 

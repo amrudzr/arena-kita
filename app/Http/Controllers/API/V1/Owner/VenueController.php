@@ -12,7 +12,6 @@ use App\Services\Owner\VenueService;
 use App\Traits\ApiResponseTrait;
 use Exception;
 
-
 /**
  * @group Venue Management
  *
@@ -33,6 +32,7 @@ class VenueController extends Controller
     {
         try {
             $data = Venue::with('owner:id,full_name,email')->where('owner_id', $owner->id)->get();
+
             return $this->sendSuccessWithData($data, 'Berhasil menampilkan.', 200);
         } catch (Exception $e) {
             return $this->sendInternalError($e);
@@ -43,17 +43,22 @@ class VenueController extends Controller
     {
         try {
             $venue = $this->venueService->createVenue($request->validated());
+
             return $this->sendSuccessWithData($venue, 'Venue berhasil ditambahkan.', 201);
         } catch (Exception $e) {
             return $this->sendInternalError($e);
         }
     }
 
-    public function update(UpdateRequest $request, Venue $venue)    {
+    public function update(UpdateRequest $request, Venue $venue)
+    {
         try {
             $owner = $request->user('api_owner');
-            if ($venue->owner_id !== $owner->id) return $this->sendError('Venue tidak bisa diubah.', [], 400);
+            if ($venue->owner_id !== $owner->id) {
+                return $this->sendError('Venue tidak bisa diubah.', [], 400);
+            }
             $update = $this->venueService->updateVenue($request->validated(), $venue);
+
             return $this->sendSuccessWithData($update, 'Venue berhasil diupdate.', 200);
         } catch (Exception $e) {
             return $this->sendInternalError($e);
@@ -64,8 +69,11 @@ class VenueController extends Controller
     {
         try {
             $owner = $request->user('api_owner');
-            if ($venue->owner_id !== $owner->id) return $this->sendError('Venue tidak bisa dihapus.', [], 400);
+            if ($venue->owner_id !== $owner->id) {
+                return $this->sendError('Venue tidak bisa dihapus.', [], 400);
+            }
             $delete = $this->venueService->deleteVenue($venue);
+
             return $this->sendSuccessWithData($delete, 'Venue berhasil dihapus.', 200);
         } catch (Exception $e) {
             return $this->sendInternalError($e);

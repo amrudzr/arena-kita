@@ -6,9 +6,7 @@ use App\Models\Venue;
 
 class VenueService
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function createVenue(array $request)
     {

@@ -26,6 +26,7 @@ class VenueController extends Controller
     {
         try {
             $data = Venue::with('owner:id,full_name,email')->get();
+
             return $this->sendSuccessWithData($data, 'Berhasil menampilkan.', 200);
         } catch (Exception $e) {
             return $this->sendInternalError($e);
@@ -36,6 +37,7 @@ class VenueController extends Controller
     {
         try {
             $data = Venue::with('owner:id,full_name,email')->find($venue->id);
+
             return $this->sendSuccessWithData($data, 'Berhasil menampilkan.', 200);
         } catch (Exception $e) {
             return $this->sendInternalError($e);
@@ -46,6 +48,7 @@ class VenueController extends Controller
     {
         try {
             $venue = $this->venueService->createVenue($request->validated());
+
             return $this->sendSuccessWithData($venue, 'Venue berhasil ditambahkan.', 201);
         } catch (Exception $e) {
             return $this->sendInternalError($e);
@@ -56,6 +59,7 @@ class VenueController extends Controller
     {
         try {
             $venue = $this->venueService->updateVenue($request->validated(), $venue);
+
             return $this->sendSuccessWithData($venue, 'Venue berhasil diupdate.', 200);
         } catch (Exception $e) {
             return $this->sendInternalError($e);
@@ -66,6 +70,7 @@ class VenueController extends Controller
     {
         try {
             $venue = $this->venueService->deleteVenue($venue);
+
             return $this->sendSuccessWithData($venue, 'Venue berhasil dihapus.', 200);
         } catch (Exception $e) {
             return $this->sendInternalError($e);

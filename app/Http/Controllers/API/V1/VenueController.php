@@ -15,6 +15,7 @@ class VenueController extends Controller
     {
         try {
             $data = Venue::with('owner:id,full_name,email')->get();
+
             return $this->sendSuccessWithData($data, 'Berhasil menampilkan.', 200);
         } catch (Exception $e) {
             return $this->sendInternalError($e);

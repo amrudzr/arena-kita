@@ -32,17 +32,22 @@ class VenuePhotoController extends Controller
     {
         try {
             $data = VenuePhoto::with('venue:id,owner_id,venue_name')->where('venue_id', $venue->id)->get();
+
             return $this->sendSuccessWithData($data, 'Berhasil menampilkan foto.', 200);
         } catch (Exception $e) {
             return $this->sendInternalError($e);
         }
     }
 
-    public function store(StoreRequest $request, Venue $venue) {
+    public function store(StoreRequest $request, Venue $venue)
+    {
         try {
             $owner = $request->user('api_owner');
-            if ($venue->owner_id !== $owner->id) return $this->sendError('Foto venue tidak dapat ditambah.', [], 400);
+            if ($venue->owner_id !== $owner->id) {
+                return $this->sendError('Foto venue tidak dapat ditambah.', [], 400);
+            }
             $venuePhoto = $this->venuePhotoService->createPhoto($request->validated(), $venue);
+
             return $this->sendSuccessWithData($venuePhoto, 'Foto venue berhasil ditambahkan.', 201);
         } catch (Exception $e) {
             return $this->sendInternalError($e);
@@ -53,8 +58,11 @@ class VenuePhotoController extends Controller
     {
         try {
             $owner = $request->user('api_owner');
-            if ($venue->owner_id !== $owner->id) return $this->sendError('Foto venue tidak bisa diubah.', [], 400);
+            if ($venue->owner_id !== $owner->id) {
+                return $this->sendError('Foto venue tidak bisa diubah.', [], 400);
+            }
             $update = $this->venuePhotoService->updatePhoto($request->validated(), $photo);
+
             return $this->sendSuccessWithData($update, 'Foto venue berhasil diupdate.', 200);
         } catch (Exception $e) {
             return $this->sendInternalError($e);
@@ -65,8 +73,11 @@ class VenuePhotoController extends Controller
     {
         try {
             $owner = $request->user('api_owner');
-            if ($venue->owner_id !== $owner->id) return $this->sendError('Foto venue tidak dapat dihapus.', [], 400);
+            if ($venue->owner_id !== $owner->id) {
+                return $this->sendError('Foto venue tidak dapat dihapus.', [], 400);
+            }
             $delete = $this->venuePhotoService->deletePhoto($photo);
+
             return $this->sendSuccessWithData($delete, 'Foto venue berhasil dihapus.', 200);
         } catch (Exception $e) {
             return $this->sendInternalError($e);

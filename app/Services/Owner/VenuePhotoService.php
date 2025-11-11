@@ -8,14 +8,13 @@ use Illuminate\Support\Facades\Storage;
 
 class VenuePhotoService
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function createPhoto(array $photoData, $venue)
     {
         $path = $photoData['photo_url']->store('venue', 'public');
         $photoData['photo_url'] = $path;
+
         return $venue->venuePhoto()->create($photoData, $venue);
     }
 
@@ -32,7 +31,10 @@ class VenuePhotoService
         }
         $otherData = $photoData;
         unset($otherData['photo_url']);
-        if (!empty($otherData)) $photo->update($otherData);
+        if (! empty($otherData)) {
+            $photo->update($otherData);
+        }
+
         return $photo->refresh();
     }
 
