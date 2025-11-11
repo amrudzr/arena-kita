@@ -1,17 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\API\V1;
+namespace App\Http\Controllers\API\V1\Owner;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\API\V1\VenuePhoto\DestroyRequest;
-use App\Http\Requests\API\V1\VenuePhoto\UpdateRequest;
-use App\Traits\ApiResponseTrait;
-use App\Services\VenuePhotoService;
-use App\Models\VenuePhoto;
+use App\Http\Requests\API\V1\Owner\VenuePhoto\DestroyRequest;
+use App\Http\Requests\API\V1\Owner\VenuePhoto\StoreRequest;
+use App\Http\Requests\API\V1\Owner\VenuePhoto\UpdateRequest;
 use App\Models\Venue;
-use App\Http\Requests\API\V1\VenuePhoto\StoreRequest;
+use App\Models\VenuePhoto;
+use App\Services\Owner\VenuePhotoService;
+use App\Traits\ApiResponseTrait;
 use Exception;
-use Illuminate\Support\Facades\Log;
 
 /**
  * @group Venue Photo Management

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\API\V1\VenuePhoto;
+namespace App\Http\Requests\API\V1\Owner\Venue;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;

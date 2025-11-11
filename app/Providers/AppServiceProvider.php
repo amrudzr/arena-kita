@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Services\VenueService;
+use App\Services\Owner\VenueService;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;

@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Admin;
+
+use App\Models\Venue;
 
 class VenueService
 {
     public function __construct()
     {
-
     }
 
     public function createVenue(array $request)
     {
-        $owner = auth()->guard('api_owner')->user();
-        return $owner->venues()->create($request);
+        return Venue::class->create($request);
     }
 
     public function updateVenue(array $request, $venue)
