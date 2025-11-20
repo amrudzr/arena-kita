@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\Auth\LoginRequest;
-use App\Http\Requests\Api\Auth\RegisterRequest;
+use App\Http\Requests\API\Auth\LoginRequest;
+use App\Http\Requests\API\Auth\RegisterRequest;
 use App\Services\AuthService;
 use App\Traits\ApiResponseTrait;
 use Exception;
