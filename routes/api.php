@@ -25,23 +25,19 @@ Route::prefix('v1')->group(function () {
         Route::post('/logout', 'logout')->middleware(['auth:api_user,api_owner']);
     });
 
-    Route::prefix('owners')->group(function () {
-        Route::get('/{owner}/venues', [OwnerVenueController::class, 'index']);
+    Route::middleware('auth:api_owner')->prefix('owners')->group(function () {
+        Route::prefix('venues/{venue}/photos')->controller(OwnerVenuePhotoController::class)->group(function () {
+            Route::get('/', 'index');
+            Route::post('/', 'store');
+            Route::delete('/{photo}', 'destroy');
+        });
 
         Route::prefix('venues')->controller(OwnerVenueController::class)->group(function () {
             Route::post('/', 'store');
             Route::put('/{venue}', 'update');
             Route::delete('/{venue}', 'destroy');
-
-            Route::prefix('{venue}')->group(function () {
-                Route::prefix('photos')->controller(OwnerVenuePhotoController::class)->group(function () {
-                    Route::get('/', 'index');
-                    Route::post('/', 'store');
-                    Route::put('/{photo}', 'update');
-                    Route::delete('/{photo}', 'destroy');
-                });
-            });
         });
+
     });
 
     Route::prefix('admin')->group(function () {
