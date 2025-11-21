@@ -14,6 +14,8 @@ class Owner extends Authenticatable
 
     protected $guarded = [];
 
+    protected $appends = ['role'];
+
     protected $hidden = [
         'password',
     ];
@@ -25,6 +27,11 @@ class Owner extends Authenticatable
         ];
     }
 
+    public function getRoleAttribute()
+    {
+        return 'owner';
+    }
+    
     public function venues()
     {
         return $this->hasMany(Venue::class);

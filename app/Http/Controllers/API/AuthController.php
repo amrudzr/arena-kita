@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\API\Auth\LoginRequest;
-use App\Http\Requests\API\Auth\RegisterRequest;
-use App\Services\AuthService;
-use App\Traits\ApiResponseTrait;
 use Exception;
 use Illuminate\Http\Request;
+use App\Services\AuthService;
 use Illuminate\Http\Response;
+use App\Traits\ApiResponseTrait;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\API\Auth\LoginRequest;
+use App\Http\Resources\V1\Owner\OwnerResource;
 use Illuminate\Validation\ValidationException;
+use App\Http\Requests\API\Auth\RegisterRequest;
 
 class AuthController extends Controller
 {
@@ -73,9 +74,11 @@ class AuthController extends Controller
         try {
             $result = $this->authService->attemptLogin('api_owner', $request->validated());
 
+            $user = $result['user'];
+
             return $this->sendSuccessWithData([
                 'token' => $result['token'],
-                'user' => $result['user'],
+                'user' => new OwnerResource($user),
             ], 'Login Owner berhasil.');
 
         } catch (ValidationException $e) {
