@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\API\V1\Owner;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\API\V1\Owner\VenuePhoto\DestroyRequest;
-use App\Http\Requests\API\V1\Owner\VenuePhoto\StoreRequest;
-use App\Http\Requests\API\V1\Owner\VenuePhoto\UpdateRequest;
+use Throwable;
 use App\Models\Venue;
 use App\Models\VenuePhoto;
-use App\Services\Owner\VenuePhotoService;
 use App\Traits\ApiResponseTrait;
-use Exception;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Services\Owner\VenuePhotoService;
+use App\Http\Requests\API\V1\Owner\VenuePhoto\StoreRequest;
+use App\Http\Requests\API\V1\Owner\VenuePhoto\UpdateRequest;
+use App\Http\Requests\API\V1\Owner\VenuePhoto\DestroyRequest;
 
 /**
  * @group Venue Photo Management
@@ -31,10 +32,17 @@ class VenuePhotoController extends Controller
     public function index(Venue $venue)
     {
         try {
-            $data = VenuePhoto::with('venue:id,owner_id,venue_name')->where('venue_id', $venue->id)->get();
+            $ownerId = Auth::guard('api_owner')->id();
+            if ($venue->owner_id !== $ownerId) {
+                return $this->sendError('Venue tidak ditemukan atau Anda tidak memiliki akses.', [], 404);
+            }
+
+            $data = $venue->venuePhoto()
+                ->with('venue:id,venue_name')
+                ->get();
 
             return $this->sendSuccessWithData($data, 'Berhasil menampilkan foto.', 200);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             return $this->sendInternalError($e);
         }
     }
@@ -46,25 +54,11 @@ class VenuePhotoController extends Controller
             if ($venue->owner_id !== $owner->id) {
                 return $this->sendError('Foto venue tidak dapat ditambah.', [], 400);
             }
+
             $venuePhoto = $this->venuePhotoService->createPhoto($request->validated(), $venue);
 
             return $this->sendSuccessWithData($venuePhoto, 'Foto venue berhasil ditambahkan.', 201);
-        } catch (Exception $e) {
-            return $this->sendInternalError($e);
-        }
-    }
-
-    public function update(UpdateRequest $request, Venue $venue, VenuePhoto $photo)
-    {
-        try {
-            $owner = $request->user('api_owner');
-            if ($venue->owner_id !== $owner->id) {
-                return $this->sendError('Foto venue tidak bisa diubah.', [], 400);
-            }
-            $update = $this->venuePhotoService->updatePhoto($request->validated(), $photo);
-
-            return $this->sendSuccessWithData($update, 'Foto venue berhasil diupdate.', 200);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             return $this->sendInternalError($e);
         }
     }
@@ -76,10 +70,15 @@ class VenuePhotoController extends Controller
             if ($venue->owner_id !== $owner->id) {
                 return $this->sendError('Foto venue tidak dapat dihapus.', [], 400);
             }
-            $delete = $this->venuePhotoService->deletePhoto($photo);
 
-            return $this->sendSuccessWithData($delete, 'Foto venue berhasil dihapus.', 200);
-        } catch (Exception $e) {
+            if ($photo->venue_id !== $venue->id) {
+                 return $this->sendError('Foto tidak ditemukan di venue ini.', [], 404);
+            }
+
+            $this->venuePhotoService->deletePhoto($photo);
+
+            return $this->sendSuccess('Foto venue berhasil dihapus.', 200);
+        } catch (Throwable $e) {
             return $this->sendInternalError($e);
         }
     }
