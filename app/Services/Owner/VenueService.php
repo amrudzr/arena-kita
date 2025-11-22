@@ -15,7 +15,9 @@ class VenueService
 
     public function updateVenue(array $request, $venue)
     {
-        return $venue->update($request);
+        $venue->update($request);
+
+        return $venue->refresh();
     }
 
     public function deleteVenue($venue)

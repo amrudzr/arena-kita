@@ -26,9 +26,9 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::prefix('owners')->group(function () {
-        Route::get('/{owner}/venues', [OwnerVenueController::class, 'index']);
-
         Route::prefix('venues')->controller(OwnerVenueController::class)->group(function () {
+            Route::get('/', 'index');
+            Route::get('/{venue}', 'show');
             Route::post('/', 'store');
             Route::put('/{venue}', 'update');
             Route::delete('/{venue}', 'destroy');
