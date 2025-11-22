@@ -31,7 +31,7 @@ class Owner extends Authenticatable
     {
         return 'owner';
     }
-    
+
     public function venues()
     {
         return $this->hasMany(Venue::class);

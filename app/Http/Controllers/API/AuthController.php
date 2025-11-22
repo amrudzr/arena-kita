@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\API;
 
-use Exception;
-use Illuminate\Http\Request;
-use App\Services\AuthService;
-use Illuminate\Http\Response;
-use App\Traits\ApiResponseTrait;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\Auth\LoginRequest;
-use App\Http\Resources\V1\Owner\OwnerResource;
-use Illuminate\Validation\ValidationException;
 use App\Http\Requests\API\Auth\RegisterRequest;
+use App\Http\Resources\V1\Owner\OwnerResource;
+use App\Services\AuthService;
+use App\Traits\ApiResponseTrait;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
