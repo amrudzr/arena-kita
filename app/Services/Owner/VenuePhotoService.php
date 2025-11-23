@@ -3,7 +3,6 @@
 namespace App\Services\Owner;
 
 use App\Models\VenuePhoto;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
 class VenuePhotoService

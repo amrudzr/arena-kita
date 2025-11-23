@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\API\V1\Owner;
 
-use Throwable;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\API\V1\Owner\VenuePhoto\DestroyRequest;
+use App\Http\Requests\API\V1\Owner\VenuePhoto\StoreRequest;
 use App\Models\Venue;
 use App\Models\VenuePhoto;
-use App\Traits\ApiResponseTrait;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Services\Owner\VenuePhotoService;
-use App\Http\Requests\API\V1\Owner\VenuePhoto\StoreRequest;
-use App\Http\Requests\API\V1\Owner\VenuePhoto\UpdateRequest;
-use App\Http\Requests\API\V1\Owner\VenuePhoto\DestroyRequest;
+use App\Traits\ApiResponseTrait;
+use Illuminate\Support\Facades\Auth;
+use Throwable;
 
 /**
  * @group Venue Photo Management
@@ -72,7 +71,7 @@ class VenuePhotoController extends Controller
             }
 
             if ($photo->venue_id !== $venue->id) {
-                 return $this->sendError('Foto tidak ditemukan di venue ini.', [], 404);
+                return $this->sendError('Foto tidak ditemukan di venue ini.', [], 404);
             }
 
             $this->venuePhotoService->deletePhoto($photo);
