@@ -32,16 +32,8 @@ Route::prefix('v1')->group(function () {
             Route::post('/', 'store');
             Route::put('/{venue}', 'update');
             Route::delete('/{venue}', 'destroy');
-
-            Route::prefix('{venue}')->group(function () {
-                Route::prefix('photos')->controller(OwnerVenuePhotoController::class)->group(function () {
-                    Route::get('/', 'index');
-                    Route::post('/', 'store');
-                    Route::put('/{photo}', 'update');
-                    Route::delete('/{photo}', 'destroy');
-                });
-            });
         });
+
     });
 
     Route::prefix('admin')->group(function () {
