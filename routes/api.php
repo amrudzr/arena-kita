@@ -8,10 +8,6 @@ use App\Http\Controllers\API\V1\Owner\VenueController as OwnerVenueController;
 use App\Http\Controllers\API\V1\VenueController;
 use Illuminate\Support\Facades\Route;
 
-// Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
 Route::prefix('v1')->group(function () {
     Route::controller(VenueController::class)->group(function () {
         Route::get('/venues', 'index');
@@ -25,12 +21,31 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::prefix('owners')->group(function () {
-        Route::prefix('venues')->controller(OwnerVenueController::class)->group(function () {
-            Route::get('/', 'index');
-            Route::get('/{venue}', 'show');
-            Route::post('/', 'store');
-            Route::put('/{venue}', 'update');
-            Route::delete('/{venue}', 'destroy');
+        Route::get('/{owner}/venues', [OwnerVenueController::class, 'index']);
+
+        Route::middleware('auth:api_owner')->group(function () {
+
+            Route::prefix('venues')->controller(OwnerVenueController::class)->group(function () {
+                Route::post('/', 'store');
+                Route::put('/{venue}', 'update');
+                Route::delete('/{venue}', 'destroy');
+
+                Route::prefix('{venue}')->group(function () {
+                    Route::prefix('photos')->controller(OwnerVenuePhotoController::class)->group(function () {
+                        Route::get('/', 'index');
+                        Route::post('/', 'store');
+                        Route::put('/{photo}', 'update');
+                        Route::delete('/{photo}', 'destroy');
+                    });
+
+                    Route::post('fields', [FieldController::class, 'store']);
+                });
+            });
+
+            Route::prefix('fields')->controller(FieldController::class)->group(function () {
+                Route::put('/{field}', 'update');
+                Route::delete('/{field}', 'destroy');
+            });
         });
 
     });
@@ -52,11 +67,4 @@ Route::prefix('v1')->group(function () {
         });
     });
 
-    Route::middleware('auth:api_owner')->group(function () {
-        Route::controller(FieldController::class)->group(function () {
-            Route::post('venues/{venue}/fields', 'store');
-            Route::put('fields/{field}', 'update');
-            Route::delete('fields/{field}', 'destroy');
-        });
-    });
 });
