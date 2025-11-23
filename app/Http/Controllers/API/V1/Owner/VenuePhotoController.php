@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\API\V1\Owner;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\API\V1\Owner\VenuePhoto\DestroyRequest;
-use App\Http\Requests\API\V1\Owner\VenuePhoto\StoreRequest;
+use Exception;
 use App\Models\Venue;
 use App\Models\VenuePhoto;
-use App\Services\Owner\VenuePhotoService;
 use App\Traits\ApiResponseTrait;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Throwable;
+use App\Services\Owner\VenuePhotoService;
+use App\Http\Requests\API\V1\Owner\VenuePhoto\StoreRequest;
+use App\Http\Requests\API\V1\Owner\VenuePhoto\DestroyRequest;
 
 /**
  * @group Venue Photo Management
@@ -41,7 +41,7 @@ class VenuePhotoController extends Controller
                 ->get();
 
             return $this->sendSuccessWithData($data, 'Berhasil menampilkan foto.', 200);
-        } catch (Throwable $e) {
+        } catch (Exception $e) {
             return $this->sendInternalError($e);
         }
     }
@@ -57,7 +57,7 @@ class VenuePhotoController extends Controller
             $venuePhoto = $this->venuePhotoService->createPhoto($request->validated(), $venue);
 
             return $this->sendSuccessWithData($venuePhoto, 'Foto venue berhasil ditambahkan.', 201);
-        } catch (Throwable $e) {
+        } catch (Exception $e) {
             return $this->sendInternalError($e);
         }
     }
@@ -77,7 +77,7 @@ class VenuePhotoController extends Controller
             $this->venuePhotoService->deletePhoto($photo);
 
             return $this->sendSuccess('Foto venue berhasil dihapus.', 200);
-        } catch (Throwable $e) {
+        } catch (Exception $e) {
             return $this->sendInternalError($e);
         }
     }
