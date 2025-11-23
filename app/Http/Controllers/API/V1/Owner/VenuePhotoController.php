@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers\API\V1\Owner;
 
-use Exception;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\API\V1\Owner\VenuePhoto\DestroyRequest;
+use App\Http\Requests\API\V1\Owner\VenuePhoto\StoreRequest;
 use App\Models\Venue;
 use App\Models\VenuePhoto;
-use App\Traits\ApiResponseTrait;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Services\Owner\VenuePhotoService;
-use App\Http\Requests\API\V1\Owner\VenuePhoto\StoreRequest;
-use App\Http\Requests\API\V1\Owner\VenuePhoto\DestroyRequest;
+use App\Traits\ApiResponseTrait;
+use Exception;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * @group Venue Photo Management
