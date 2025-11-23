@@ -5,7 +5,6 @@ use App\Http\Controllers\API\FieldController;
 use App\Http\Controllers\API\ProfileController;
 use App\Http\Controllers\API\V1\Admin\VenueController as AdminVenueController;
 use App\Http\Controllers\API\V1\Owner\VenueController as OwnerVenueController;
-use App\Http\Controllers\API\V1\Owner\VenuePhotoController as OwnerVenuePhotoController;
 use App\Http\Controllers\API\V1\VenueController;
 use Illuminate\Support\Facades\Route;
 
