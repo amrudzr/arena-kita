@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
-use App\Http\Controllers\API\FieldController;
 use App\Http\Controllers\API\ProfileController;
 use App\Http\Controllers\API\V1\Admin\VenueController as AdminVenueController;
+use App\Http\Controllers\API\V1\Owner\FieldController as OwnerFieldController;
 use App\Http\Controllers\API\V1\Owner\VenueController as OwnerVenueController;
 use App\Http\Controllers\API\V1\Owner\VenuePhotoController as OwnerVenuePhotoController;
 use App\Http\Controllers\API\V1\VenueController;
@@ -21,31 +21,29 @@ Route::prefix('v1')->group(function () {
         Route::post('/logout', 'logout')->middleware(['auth:api_user,api_owner']);
     });
 
-    Route::prefix('owners')->group(function () {
-        Route::get('/{owner}/venues', [OwnerVenueController::class, 'index']);
+    Route::middleware('auth:api_owner')->prefix('owners')->group(function () {
+        Route::prefix('venues')->controller(OwnerVenueController::class)->group(function () {
+            Route::get('/', 'index');
+            Route::post('/', 'store');
+            Route::get('/{venue}', 'show');
+            Route::put('/{venue}', 'update');
+            Route::delete('/{venue}', 'destroy');
 
-        Route::middleware('auth:api_owner')->group(function () {
-
-            Route::prefix('venues')->controller(OwnerVenueController::class)->group(function () {
-                Route::post('/', 'store');
-                Route::put('/{venue}', 'update');
-                Route::delete('/{venue}', 'destroy');
-
-                Route::prefix('{venue}')->group(function () {
-                    Route::prefix('photos')->controller(OwnerVenuePhotoController::class)->group(function () {
-                        Route::get('/', 'index');
-                        Route::post('/', 'store');
-                        Route::put('/{photo}', 'update');
-                        Route::delete('/{photo}', 'destroy');
-                    });
-
-                    Route::post('fields', [FieldController::class, 'store']);
+            Route::prefix('{venue}')->group(function () {
+                Route::prefix('photos')->controller(OwnerVenuePhotoController::class)->group(function () {
+                    Route::get('/', 'index');
+                    Route::post('/', 'store');
+                    Route::put('/{photo}', 'update');
+                    Route::delete('/{photo}', 'destroy');
                 });
-            });
 
-            Route::prefix('fields')->controller(FieldController::class)->group(function () {
-                Route::put('/{field}', 'update');
-                Route::delete('/{field}', 'destroy');
+                Route::prefix('fields')->controller(OwnerFieldController::class)->group(function () {
+                    Route::get('/', 'index');
+                    Route::post('/', 'store');
+                    Route::get('/{field}', 'show');
+                    Route::put('/{field}', 'update');
+                    Route::delete('/{field}', 'destroy');
+                });
             });
         });
     });
