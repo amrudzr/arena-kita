@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Requests\API\Field;
+namespace App\Http\Requests\API\V1\Owner\Field;
 
 use App\Enums\FieldStatus;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Enum as EnumRule;
@@ -17,6 +18,11 @@ class StoreRequest extends FormRequest
         $venue = $this->route('venue');
 
         return $venue && $venue->owner_id == Auth::guard('api_owner')->id();
+    }
+
+    protected function failedAuthorization()
+    {
+        throw new AuthorizationException('Anda tidak memiliki akses untuk menambahkan lapangan di venue ini.');
     }
 
     /**
