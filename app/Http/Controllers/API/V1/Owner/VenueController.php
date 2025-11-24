@@ -51,7 +51,11 @@ class VenueController extends Controller
                 return $this->sendError('Tidak dapat mengakses venue yang bukan milik Anda.', [], 403);
             }
 
-            $data = $venue->load(['owner:id,full_name,email', 'venuePhoto:id,venue_id,photo_url']);
+            $data = $venue->load([
+                'owner:id,full_name,email',
+                'venuePhoto:id,venue_id,photo_url',
+                'fields',
+            ]);
 
             return $this->sendSuccessWithData($data, 'Berhasil menampilkan detail venue.', 200);
         } catch (Exception $e) {
@@ -81,7 +85,7 @@ class VenueController extends Controller
 
             $update = $this->venueService->updateVenue($request->validated(), $venue);
 
-            return $this->sendSuccessWithData($update, 'Venue berhasil diupdate.', 200);
+            return $this->sendSuccessWithData($update, 'Venue berhasil diperbarui.', 200);
         } catch (Exception $e) {
             return $this->sendInternalError($e);
         }
