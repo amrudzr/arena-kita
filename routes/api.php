@@ -7,6 +7,7 @@ use App\Http\Controllers\API\V1\Owner\BookingController as OwnerBookingControlle
 use App\Http\Controllers\API\V1\Owner\DashboardController as OwnerDashboardController;
 use App\Http\Controllers\API\V1\Owner\FieldController as OwnerFieldController;
 use App\Http\Controllers\API\V1\Owner\PricingSchemeController as OwnerPricingSchemeController;
+use App\Http\Controllers\API\V1\Owner\TransactionController as OwnerTransactionController;
 use App\Http\Controllers\API\V1\Owner\VenueController as OwnerVenueController;
 use App\Http\Controllers\API\V1\VenueController;
 use Illuminate\Support\Facades\Route;
@@ -59,6 +60,8 @@ Route::prefix('v1')->group(function () {
             Route::post('/approve', 'approve');
             Route::post('/reject', 'reject');
         });
+
+        Route::get('/transactions', [OwnerTransactionController::class, 'index']);
 
         Route::prefix('dashboard')->controller(OwnerDashboardController::class)->group(function () {
             Route::get('/stats', 'stats');
