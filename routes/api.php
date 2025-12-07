@@ -44,17 +44,22 @@ Route::prefix('v1')->group(function () {
                 Route::prefix('fields')->controller(OwnerFieldController::class)->group(function () {
                     Route::get('/', 'index');
                     Route::post('/', 'store');
-                    Route::get('/{field}', 'show');
-                    Route::put('/{field}', 'update');
-                    Route::delete('/{field}', 'destroy');
                 });
             });
         });
 
-        Route::prefix('fields/{field}/pricing')->controller(OwnerPricingSchemeController::class)->group(function () {
-            Route::get('/', 'index');
-            Route::post('/', 'store');
-            Route::delete('/{pricing}', 'destroy');
+        Route::prefix('fields/{field}')->group(function () {
+            Route::controller(OwnerFieldController::class)->group(function () {
+                Route::get('/', 'show');
+                Route::put('/', 'update');
+                Route::delete('/', 'destroy');
+            });
+
+            Route::prefix('pricing')->controller(OwnerPricingSchemeController::class)->group(function () {
+                Route::get('/', 'index');
+                Route::post('/', 'store');
+                Route::delete('/{pricing}', 'destroy');
+            });
         });
 
         Route::prefix('bookings/{booking}')->controller(OwnerBookingController::class)->group(function () {
