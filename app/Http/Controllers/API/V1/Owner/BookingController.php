@@ -39,7 +39,7 @@ class BookingController extends Controller
         try {
             $updatedBooking = $this->service->rejectBooking($booking);
 
-            return $this->sendSuccessWithData(new BookingResource($updatedBooking), 'Booking telah ditolak.');
+            return $this->sendSuccessWithData(new BookingResource($updatedBooking->load('user', 'pricingScheme.field.venue')), 'Booking telah ditolak.');
         } catch (ValidationException $e) {
             return $this->sendError($e->getMessage(), $e->errors(), 422);
         } catch (Exception $e) {

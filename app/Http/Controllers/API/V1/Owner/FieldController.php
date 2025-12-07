@@ -45,7 +45,7 @@ class FieldController extends Controller
 
     public function show(Field $field)
     {
-        $field->load('venue', 'pricingSchemes');
+        $field->load('venue:id,owner_id', 'pricingSchemes');
 
         if ($field->venue->owner_id !== auth()->id()) {
             return $this->sendError('Unauthorized', [], 403);
@@ -74,6 +74,9 @@ class FieldController extends Controller
     public function update(UpdateRequest $request, Field $field)
     {
         try {
+            if ($field->venue->owner_id !== auth()->id()) {
+                return $this->sendError('Anda tidak memiliki akses ke lapangan ini.', [], 403);
+            }
             $updatedField = $this->fieldService->updateField($field, $request->validated());
 
             return $this->sendSuccessWithData(new FieldResource($field->refresh()), 'Data lapangan berhasil diperbarui.');
@@ -85,8 +88,9 @@ class FieldController extends Controller
     public function destroy(Field $field)
     {
         try {
+            $field->loadMissing('venue:id,owner_id');
             if ($field->venue->owner_id !== auth()->id()) {
-                return $this->sendError('Unauthorized', [], 403);
+                return $this->sendError('Anda tidak memiliki akses ke lapangan ini.', [], 403);
             }
 
             $field->delete();
