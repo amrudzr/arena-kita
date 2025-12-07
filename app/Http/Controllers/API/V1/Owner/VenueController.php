@@ -32,8 +32,7 @@ class VenueController extends Controller
     public function index()
     {
         try {
-            $venues = Venue::with('owner:id,full_name,email')
-                ->where('owner_id', Auth::guard('api_owner')->id())
+            $venues = Venue::where('owner_id', Auth::guard('api_owner')->id())
                 ->whereNull('deleted_at')
                 ->get();
 
