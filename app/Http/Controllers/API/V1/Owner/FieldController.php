@@ -74,6 +74,9 @@ class FieldController extends Controller
     public function update(UpdateRequest $request, Field $field)
     {
         try {
+            if ($field->venue->owner_id !== auth()->id()) {
+                return $this->sendError('Unauthorized', [], 403);
+            }
             $updatedField = $this->fieldService->updateField($field, $request->validated());
 
             return $this->sendSuccessWithData(new FieldResource($field->refresh()), 'Data lapangan berhasil diperbarui.');
