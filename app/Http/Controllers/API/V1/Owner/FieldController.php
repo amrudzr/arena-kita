@@ -88,6 +88,7 @@ class FieldController extends Controller
     public function destroy(Field $field)
     {
         try {
+            $field->loadMissing('venue:id,owner_id');
             if ($field->venue->owner_id !== auth()->id()) {
                 return $this->sendError('Anda tidak memiliki akses ke lapangan ini.', [], 403);
             }
