@@ -14,7 +14,7 @@ class BookingResource extends JsonResource
             'booking_date' => $this->booking_date->format('Y-m-d'),
             'start_time' => $this->start_time->format('H:i'),
             'end_time' => $this->end_time->format('H:i'),
-            'total_price' => 'Rp ' . number_format($this->total_price, 0, ',', '.'),
+            'total_price' => 'Rp '.number_format($this->total_price, 0, ',', '.'),
             'raw_total_price' => (float) $this->total_price,
             'status' => $this->booking_status,
             'created_at' => $this->created_at->format('Y-m-d H:i'),

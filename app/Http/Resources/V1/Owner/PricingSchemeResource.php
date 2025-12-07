@@ -12,7 +12,7 @@ class PricingSchemeResource extends JsonResource
         return [
             'id' => $this->id,
             'duration_minutes' => $this->duration_minutes,
-            'price' => 'Rp ' . number_format($this->price, 0, ',', '.'),
+            'price' => 'Rp '.number_format($this->price, 0, ',', '.'),
             'raw_price' => (float) $this->price,
             'description' => $this->description,
         ];
