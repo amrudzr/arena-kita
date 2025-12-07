@@ -30,9 +30,9 @@ class BookingResource extends JsonResource
 
             'field_info' => $this->whenLoaded('pricingScheme', function () {
                 return [
-                    'field_name' => $this->pricingScheme->field->field_name ?? '-',
-                    'sport_type' => $this->pricingScheme->field->sport_type ?? '-',
-                    'venue_name' => $this->pricingScheme->field->venue->venue_name ?? '-',
+                    'field_name' => optional($this->pricingScheme->field)->field_name ?? '-',
+                    'sport_type' => optional($this->pricingScheme->field)->sport_type ?? '-',
+                    'venue_name' => optional(optional($this->pricingScheme->field)->venue)->venue_name ?? '-',
                 ];
             }),
         ];
