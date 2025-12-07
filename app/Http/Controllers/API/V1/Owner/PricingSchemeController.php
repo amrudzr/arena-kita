@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\API\V1\Owner;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\API\V1\Owner\Pricing\StoreRequest;
 use App\Models\Field;
 use App\Models\PricingScheme;
-use App\Services\Owner\PricingSchemeService;
 use App\Traits\ApiResponseTrait;
+use App\Http\Controllers\Controller;
+use App\Services\Owner\PricingSchemeService;
+use App\Http\Resources\V1\Owner\PricingSchemeResource;
+use App\Http\Requests\API\V1\Owner\Pricing\StoreRequest;
 
 class PricingSchemeController extends Controller
 {
@@ -26,7 +27,7 @@ class PricingSchemeController extends Controller
             return $this->sendError('Anda tidak memiliki akses.', [], 403);
         }
 
-        return $this->sendSuccessWithData($field->pricingSchemes, 'Data harga berhasil diambil.');
+        return $this->sendSuccessWithData(PricingSchemeResource::collection($field->pricingSchemes), 'Data harga berhasil diambil.');
     }
 
     public function store(StoreRequest $request, Field $field)
@@ -34,7 +35,7 @@ class PricingSchemeController extends Controller
         try {
             $data = $this->service->createScheme($field, $request->validated());
 
-            return $this->sendSuccessWithData($data, 'Skema harga berhasil dibuat.', 201);
+            return $this->sendSuccessWithData(new PricingSchemeResource($data), 'Skema harga berhasil dibuat.', 201);
         } catch (\Exception $e) {
             return $this->sendInternalError($e);
         }

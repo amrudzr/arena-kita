@@ -16,6 +16,14 @@ class Venue extends Model
 
     protected $guarded = [];
 
+    protected function casts(): array
+    {
+        return [
+            'opening_time' => 'datetime:H:i',
+            'closing_time' => 'datetime:H:i',
+        ];
+    }
+
     public function owner()
     {
         return $this->belongsTo(Owner::class);
@@ -26,7 +34,7 @@ class Venue extends Model
         return $this->hasMany(Field::class);
     }
 
-    public function venuePhoto()
+    public function photos()
     {
         return $this->hasMany(VenuePhoto::class);
     }

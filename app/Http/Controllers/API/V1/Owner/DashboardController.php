@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\API\V1\Owner;
 
+use Illuminate\Http\Request;
+use App\Traits\ApiResponseTrait;
 use App\Http\Controllers\Controller;
 use App\Services\Owner\DashboardService;
-use App\Traits\ApiResponseTrait;
-use Illuminate\Http\Request;
+use App\Http\Resources\V1\Owner\BookingResource;
 
 class DashboardController extends Controller
 {
@@ -25,7 +26,7 @@ class DashboardController extends Controller
 
             $data = $this->service->getOwnerBookings($status);
 
-            return $this->sendSuccessWithData($data, 'Daftar booking berhasil diambil.');
+            return $this->sendSuccessWithData(BookingResource::collection($data), 'Daftar booking berhasil diambil.');
         } catch (\Exception $e) {
             return $this->sendInternalError($e);
         }

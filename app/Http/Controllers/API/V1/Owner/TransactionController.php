@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\API\V1\Owner;
 
-use App\Http\Controllers\Controller;
 use App\Models\Transaction;
-use App\Traits\ApiResponseTrait;
 use Illuminate\Http\Request;
+use App\Traits\ApiResponseTrait;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\V1\Owner\TransactionResource;
 
 class TransactionController extends Controller
 {
@@ -30,7 +31,7 @@ class TransactionController extends Controller
             $perPage = $request->input('limit', 10);
             $transactions = $query->latest('payment_time')->paginate($perPage);
 
-            return $this->sendSuccessWithData($transactions, 'Riwayat transaksi berhasil diambil.');
+            return $this->sendSuccessWithData(TransactionResource::collection($transactions), 'Riwayat transaksi berhasil diambil.');
         } catch (\Exception $e) {
             return $this->sendInternalError($e);
         }

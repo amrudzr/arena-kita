@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\API\V1\Owner;
 
-use App\Http\Controllers\Controller;
+use Exception;
 use App\Models\Booking;
-use App\Services\Owner\BookingService;
 use App\Traits\ApiResponseTrait;
+use App\Http\Controllers\Controller;
+use App\Services\Owner\BookingService;
+use Illuminate\Validation\ValidationException;
+use App\Http\Resources\V1\Owner\BookingResource;
 
 class BookingController extends Controller
 {
@@ -23,10 +26,10 @@ class BookingController extends Controller
         try {
             $updatedBooking = $this->service->approveBooking($booking);
 
-            return $this->sendSuccessWithData($updatedBooking, 'Booking berhasil disetujui.');
-        } catch (\Illuminate\Validation\ValidationException $e) {
+            return $this->sendSuccessWithData(new BookingResource($updatedBooking), 'Booking berhasil disetujui.');
+        } catch (ValidationException $e) {
             return $this->sendError($e->getMessage(), $e->errors(), 422);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->sendInternalError($e);
         }
     }
@@ -36,10 +39,10 @@ class BookingController extends Controller
         try {
             $updatedBooking = $this->service->rejectBooking($booking);
 
-            return $this->sendSuccessWithData($updatedBooking, 'Booking telah ditolak.');
-        } catch (\Illuminate\Validation\ValidationException $e) {
+            return $this->sendSuccessWithData(new BookingResource($updatedBooking), 'Booking telah ditolak.');
+        } catch (ValidationException $e) {
             return $this->sendError($e->getMessage(), $e->errors(), 422);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->sendInternalError($e);
         }
     }
