@@ -45,7 +45,7 @@ class FieldController extends Controller
 
     public function show(Field $field)
     {
-        $field->load('venue', 'pricingSchemes');
+        $field->load('venue:id,owner_id', 'pricingSchemes');
 
         if ($field->venue->owner_id !== auth()->id()) {
             return $this->sendError('Unauthorized', [], 403);
