@@ -28,32 +28,31 @@ class AuthService
                     $existingUser->forceDelete();
                 }
 
+                $user = User::create([
+                    'full_name' => $validatedData['full_name'],
+                    'email' => $validatedData['email'],
+                    'phone_number' => $validatedData['phone_number'],
+                    'password' => $validatedData['password'],
+                    'role' => 'user',
+                    'email_verified_at' => null,
+                ]);
 
-                    $user = User::create([
-                        'full_name' => $validatedData['full_name'],
-                        'email' => $validatedData['email'],
-                        'phone_number' => $validatedData['phone_number'],
-                        'password' => $validatedData['password'],
-                        'role' => 'user',
-                        'email_verified_at' => null,
-                    ]);
+                $otpCode = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
 
-                    $otpCode = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT);
+                UserOtp::create([
+                    'user_id' => $user->id,
+                    'otp_code' => $otpCode,
+                    'expired_at' => now()->addMinutes(5),
+                ]);
 
-                    UserOtp::create([
-                        'user_id' => $user->id,
-                        'otp_code' => $otpCode,
-                        'expired_at' => now()->addMinutes(5),
-                    ]);
+                event(new Registered($user));
 
-                    event(new Registered($user));
-
-                    return ['user' => $user];
+                return ['user' => $user];
             });
         } catch (ValidationException $e) {
             throw $e;
         } catch (\Exception $e) {
-            \Log::error('Registrasi Error: ' . $e->getMessage(), [
+            \Log::error('Registrasi Error: '.$e->getMessage(), [
                 'email' => $validatedData['email'] ?? null,
                 'trace' => $e->getLine(),
             ]);
@@ -68,7 +67,7 @@ class AuthService
     {
         $user = User::where('email', $validatedData['email'])->first();
 
-        if (!$user) {
+        if (! $user) {
             throw ValidationException::withMessages([
                 'email' => ['User tidak ditemukan.'],
             ]);
@@ -79,7 +78,7 @@ class AuthService
             ->where('expired_at', '>', now())
             ->first();
 
-        if (!$otp) {
+        if (! $otp) {
             throw ValidationException::withMessages([
                 'otp_code' => ['Kode OTP tidak valid atau sudah kadaluarsa.'],
             ]);

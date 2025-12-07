@@ -47,7 +47,8 @@ class AuthController extends Controller
         }
     }
 
-    public function verifyUserEmail(VerifyOtpRequest $request) {
+    public function verifyUserEmail(VerifyOtpRequest $request)
+    {
         try {
             $result = $this->authService->verifyOtp($request->validated());
 

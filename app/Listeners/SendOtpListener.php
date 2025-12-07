@@ -10,9 +10,7 @@ use Illuminate\Support\Facades\Mail;
 
 class SendOtpListener
 {
-    public function __construct()
-    {
-    }
+    public function __construct() {}
 
     public function handle(Registered $event): void
     {

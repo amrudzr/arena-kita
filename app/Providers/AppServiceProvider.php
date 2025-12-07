@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Services\Owner\VenueService;
 use App\Listeners\SendOtpListener;
+use App\Services\Owner\VenueService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\DB;
