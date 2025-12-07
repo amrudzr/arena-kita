@@ -75,7 +75,7 @@ class FieldController extends Controller
     {
         try {
             if ($field->venue->owner_id !== auth()->id()) {
-                return $this->sendError('Anda tidak memiliki akses ke lapangan ini.', [], 403);
+                return $this->sendError('Unauthorized', [], 403);
             }
             $updatedField = $this->fieldService->updateField($field, $request->validated());
 
