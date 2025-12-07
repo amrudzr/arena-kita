@@ -11,7 +11,7 @@ class VenueResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->venue_name,
+            'venue_name' => $this->venue_name,
             'description' => $this->description,
             'address' => $this->address,
             'city' => $this->city,
