@@ -3,8 +3,13 @@
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\ProfileController;
 use App\Http\Controllers\API\V1\Admin\VenueController as AdminVenueController;
+use App\Http\Controllers\API\V1\Owner\BookingController as OwnerBookingController;
+use App\Http\Controllers\API\V1\Owner\DashboardController as OwnerDashboardController;
 use App\Http\Controllers\API\V1\Owner\FieldController as OwnerFieldController;
+use App\Http\Controllers\API\V1\Owner\PricingSchemeController as OwnerPricingSchemeController;
+use App\Http\Controllers\API\V1\Owner\TransactionController as OwnerTransactionController;
 use App\Http\Controllers\API\V1\Owner\VenueController as OwnerVenueController;
+use App\Http\Controllers\API\V1\Owner\VenuePhotoController as OwnerVenuePhotoController;
 use App\Http\Controllers\API\V1\VenueController;
 use Illuminate\Support\Facades\Route;
 
@@ -47,6 +52,23 @@ Route::prefix('v1')->group(function () {
             });
         });
 
+        Route::prefix('fields/{field}/pricing')->controller(OwnerPricingSchemeController::class)->group(function () {
+            Route::get('/', 'index');
+            Route::post('/', 'store');
+            Route::delete('/{pricing}', 'destroy');
+        });
+
+        Route::prefix('bookings/{booking}')->controller(OwnerBookingController::class)->group(function () {
+            Route::post('/approve', 'approve');
+            Route::post('/reject', 'reject');
+        });
+
+        Route::get('/transactions', [OwnerTransactionController::class, 'index']);
+
+        Route::prefix('dashboard')->controller(OwnerDashboardController::class)->group(function () {
+            Route::get('/stats', 'stats');
+            Route::get('/bookings', 'bookings');
+        });
     });
 
     Route::prefix('admin')->group(function () {
