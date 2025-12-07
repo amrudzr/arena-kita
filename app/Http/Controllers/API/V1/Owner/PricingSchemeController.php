@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\API\V1\Owner;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\API\V1\Owner\Pricing\StoreRequest;
+use App\Http\Resources\V1\Owner\PricingSchemeResource;
 use App\Models\Field;
 use App\Models\PricingScheme;
-use App\Traits\ApiResponseTrait;
-use App\Http\Controllers\Controller;
 use App\Services\Owner\PricingSchemeService;
-use App\Http\Resources\V1\Owner\PricingSchemeResource;
-use App\Http\Requests\API\V1\Owner\Pricing\StoreRequest;
+use App\Traits\ApiResponseTrait;
 
 class PricingSchemeController extends Controller
 {

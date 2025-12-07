@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\API\V1\Owner;
 
-use Exception;
-use App\Models\Venue;
-use App\Traits\ApiResponseTrait;
 use App\Http\Controllers\Controller;
-use App\Services\Owner\VenueService;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Resources\V1\Owner\VenueResource;
+use App\Http\Requests\API\V1\Owner\Venue\DestroyRequest;
 use App\Http\Requests\API\V1\Owner\Venue\StoreRequest;
 use App\Http\Requests\API\V1\Owner\Venue\UpdateRequest;
-use App\Http\Requests\API\V1\Owner\Venue\DestroyRequest;
+use App\Http\Resources\V1\Owner\VenueResource;
+use App\Models\Venue;
+use App\Services\Owner\VenueService;
+use App\Traits\ApiResponseTrait;
+use Exception;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * @group Venue Management

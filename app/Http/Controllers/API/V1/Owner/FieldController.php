@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\API\V1\Owner;
 
-use Exception;
-use App\Models\Field;
-use App\Models\Venue;
-use Illuminate\Http\Request;
-use App\Traits\ApiResponseTrait;
 use App\Http\Controllers\Controller;
-use App\Services\Owner\FieldService;
-use App\Http\Resources\V1\Owner\FieldResource;
 use App\Http\Requests\API\V1\Owner\Field\StoreRequest;
 use App\Http\Requests\API\V1\Owner\Field\UpdateRequest;
+use App\Http\Resources\V1\Owner\FieldResource;
+use App\Models\Field;
+use App\Models\Venue;
+use App\Services\Owner\FieldService;
+use App\Traits\ApiResponseTrait;
+use Exception;
+use Illuminate\Http\Request;
 
 class FieldController extends Controller
 {

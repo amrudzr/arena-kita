@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\API\V1\Owner;
 
-use Exception;
-use App\Models\Booking;
-use App\Traits\ApiResponseTrait;
 use App\Http\Controllers\Controller;
-use App\Services\Owner\BookingService;
-use Illuminate\Validation\ValidationException;
 use App\Http\Resources\V1\Owner\BookingResource;
+use App\Models\Booking;
+use App\Services\Owner\BookingService;
+use App\Traits\ApiResponseTrait;
+use Exception;
+use Illuminate\Validation\ValidationException;
 
 class BookingController extends Controller
 {

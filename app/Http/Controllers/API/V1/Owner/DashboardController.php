@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\API\V1\Owner;
 
-use Illuminate\Http\Request;
-use App\Traits\ApiResponseTrait;
 use App\Http\Controllers\Controller;
-use App\Services\Owner\DashboardService;
 use App\Http\Resources\V1\Owner\BookingResource;
+use App\Http\Resources\V1\Owner\DashboardStatResource;
+use App\Services\Owner\DashboardService;
+use App\Traits\ApiResponseTrait;
+use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
@@ -37,7 +38,7 @@ class DashboardController extends Controller
         try {
             $data = $this->service->getStats();
 
-            return $this->sendSuccessWithData($data, 'Statistik dashboard berhasil diambil.');
+            return $this->sendSuccessWithData(new DashboardStatResource($data), 'Statistik dashboard berhasil diambil.');
         } catch (\Exception $e) {
             return $this->sendInternalError($e);
         }
