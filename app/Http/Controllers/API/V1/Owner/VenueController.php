@@ -51,7 +51,7 @@ class VenueController extends Controller
                 return $this->sendError('Tidak dapat mengakses venue yang bukan milik Anda.', [], 403);
             }
 
-            $venue->load(['photos', 'fields']);
+            $venue->load(['venuePhoto', 'fields']);
 
             return $this->sendSuccessWithData(new VenueResource($venue), 'Berhasil menampilkan detail venue.', 200);
         } catch (Exception $e) {
