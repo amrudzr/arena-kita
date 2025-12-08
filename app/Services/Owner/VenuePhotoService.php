@@ -14,7 +14,7 @@ class VenuePhotoService
         $path = $photoData['photo_url']->store('venue', 'public');
         $photoData['photo_url'] = $path;
 
-        return $venue->venuePhoto()->create($photoData, $venue);
+        return $venue->photos()->create($photoData, $venue);
     }
 
     public function deletePhoto(VenuePhoto $photo)
