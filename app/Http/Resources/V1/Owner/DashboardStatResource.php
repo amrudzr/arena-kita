@@ -10,10 +10,10 @@ class DashboardStatResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'total_bookings' => $this['total_bookings'],
-            'pending_bookings' => $this['pending_bookings'],
-            'total_income' => 'Rp '.number_format($this['total_income'], 0, ',', '.'),
-            'raw_total_income' => (float) $this['total_income'],
+            'total_bookings' => $this['total_bookings'] ?? 0,
+            'pending_bookings' => $this['pending_bookings'] ?? 0,
+            'total_income' => 'Rp '.number_format($this['total_income'] ?? 0, 0, ',', '.'),
+            'raw_total_income' => (float) ($this['total_income'] ?? 0),
         ];
     }
 }
