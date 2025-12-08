@@ -36,7 +36,7 @@ class VenuePhotoController extends Controller
                 return $this->sendError('Venue tidak ditemukan atau Anda tidak memiliki akses.', [], 404);
             }
 
-            $data = $venue->photos()
+            $data = $venue->venuePhoto()
                 ->with('venue:id,venue_name')
                 ->get();
 

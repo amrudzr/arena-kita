@@ -18,7 +18,7 @@ class VenueResource extends JsonResource
             'gps_coordinate' => $this->gps_coordinate,
             'opening_time' => $this->opening_time?->format('H:i'),
             'closing_time' => $this->closing_time?->format('H:i'),
-            'photos' => VenuePhotoResource::collection($this->whenLoaded('photos')),
+            'photos' => VenuePhotoResource::collection($this->whenLoaded('venuePhoto')),
             'fields' => FieldResource::collection($this->whenLoaded('fields')),
         ];
     }
