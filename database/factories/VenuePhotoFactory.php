@@ -19,7 +19,8 @@ class VenuePhotoFactory extends Factory
     {
         return [
             'venue_id' => Venue::factory(),
-            'photo_url' => $this->faker->imageUrl(640, 480, 'sports complex', true),
+            // 'photo_url' => $this->faker->imageUrl(640, 480, 'sports complex', true),
+            'photo_url' => null,
         ];
     }
 }

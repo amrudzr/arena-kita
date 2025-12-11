@@ -11,7 +11,7 @@ class VenuePhotoResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'url' => $this->photo_url,
+            'url' => $this->photo_url ?? 'https://placehold.co/300x200/0d47a1/ffffff?text=Venue',
         ];
     }
 }
