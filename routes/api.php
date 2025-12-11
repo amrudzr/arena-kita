@@ -82,6 +82,8 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::prefix('admin')->group(function () {
+        Route::get('/dashboard/stats', [DashboardController::class, 'stats']);
+
         Route::prefix('venues')->controller(AdminVenueController::class)->group(function () {
             Route::get('/', 'index');
             Route::get('/{venue}', 'show');
