@@ -11,7 +11,6 @@ use App\Http\Controllers\API\V1\Owner\FieldController as OwnerFieldController;
 use App\Http\Controllers\API\V1\Owner\PricingSchemeController as OwnerPricingSchemeController;
 use App\Http\Controllers\API\V1\Owner\TransactionController as OwnerTransactionController;
 use App\Http\Controllers\API\V1\Owner\VenueController as OwnerVenueController;
-use App\Http\Controllers\API\V1\Owner\VenuePhotoController as OwnerVenuePhotoController;
 use App\Http\Controllers\API\V1\VenueController;
 use Illuminate\Support\Facades\Route;
 
