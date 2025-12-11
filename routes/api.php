@@ -3,6 +3,7 @@
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\ProfileController;
 use App\Http\Controllers\API\V1\Admin\VenueController as AdminVenueController;
+use App\Http\Controllers\API\V1\FieldController;
 use App\Http\Controllers\API\V1\Owner\BookingController as OwnerBookingController;
 use App\Http\Controllers\API\V1\Owner\DashboardController as OwnerDashboardController;
 use App\Http\Controllers\API\V1\Owner\FieldController as OwnerFieldController;
@@ -16,7 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->group(function () {
     Route::controller(VenueController::class)->group(function () {
         Route::get('/venues', 'index');
+        Route::get('/venues/{venue}', 'show');
     });
+
+    Route::get('/fields/{field}/availability', [FieldController::class, 'checkAvailability']);
 
     Route::prefix('auth')->controller(AuthController::class)->group(function () {
         Route::post('/user/register', 'registerUser');
