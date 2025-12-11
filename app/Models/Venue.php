@@ -16,6 +16,14 @@ class Venue extends Model
 
     protected $guarded = [];
 
+    protected function casts(): array
+    {
+        return [
+            'opening_time' => 'datetime:H:i',
+            'closing_time' => 'datetime:H:i',
+        ];
+    }
+
     public function owner()
     {
         return $this->belongsTo(Owner::class);
