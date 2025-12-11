@@ -3,9 +3,7 @@
 namespace App\Http\Resources\V1\Owner;
 
 use Illuminate\Http\Request;
-use App\Http\Resources\V1\Owner\FieldResource;
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\V1\Owner\VenuePhotoResource;
 
 class VenueResource extends JsonResource
 {

@@ -2,9 +2,9 @@
 
 namespace App\Http\Resources\V1;
 
+use App\Http\Resources\V1\Owner\PricingSchemeResource;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\V1\Owner\PricingSchemeResource; // Reuse Resource Harga
+use Illuminate\Http\Resources\Json\JsonResource; // Reuse Resource Harga
 
 class FieldScheduleResource extends JsonResource
 {

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use Exception;
-use App\Models\Field;
-use App\Models\Booking;
-use Illuminate\Http\Request;
-use App\Traits\ApiResponseTrait;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\FieldScheduleResource;
+use App\Models\Booking;
+use App\Models\Field;
+use App\Traits\ApiResponseTrait;
+use Exception;
+use Illuminate\Http\Request;
 
 class FieldController extends Controller
 {
@@ -25,7 +25,7 @@ class FieldController extends Controller
 
             $field = Field::with(['venue', 'pricingSchemes'])->find($id);
 
-            if (!$field) {
+            if (! $field) {
                 return $this->sendError('Lapangan tidak ditemukan.', [], 404);
             }
 
@@ -41,7 +41,7 @@ class FieldController extends Controller
             $data = [
                 'field' => $field,
                 'bookings' => $bookings,
-                'date' => $date
+                'date' => $date,
             ];
 
             return $this->sendSuccessWithData(

@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use Exception;
-use App\Models\Venue;
-use Illuminate\Http\Request;
-use App\Traits\ApiResponseTrait;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\Owner\VenueResource;
+use App\Models\Venue;
+use App\Traits\ApiResponseTrait;
+use Exception;
+use Illuminate\Http\Request;
 
 class VenueController extends Controller
 {
@@ -22,9 +22,9 @@ class VenueController extends Controller
 
             if ($request->has('search')) {
                 $search = $request->search;
-                $query->where(function($q) use ($search) {
+                $query->where(function ($q) use ($search) {
                     $q->where('venue_name', 'like', "%{$search}%")
-                      ->orWhere('city', 'like', "%{$search}%");
+                        ->orWhere('city', 'like', "%{$search}%");
                 });
             }
 
@@ -50,7 +50,7 @@ class VenueController extends Controller
         try {
             $venue = Venue::with(['venuePhoto', 'fields.pricingSchemes'])->find($id);
 
-            if (!$venue) {
+            if (! $venue) {
                 return $this->sendError('Venue tidak ditemukan.', [], 404);
             }
 
