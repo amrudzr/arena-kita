@@ -3,6 +3,9 @@
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\ProfileController;
 use App\Http\Controllers\API\V1\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\API\V1\Admin\OwnerController as AdminOwnerController;
+use App\Http\Controllers\API\V1\Admin\TransactionController as AdminTransactionController;
+use App\Http\Controllers\API\V1\Admin\UserController as AdminUserController;
 use App\Http\Controllers\API\V1\Admin\VenueController as AdminVenueController;
 use App\Http\Controllers\API\V1\FieldController;
 use App\Http\Controllers\API\V1\HomeController;
@@ -93,6 +96,22 @@ Route::prefix('v1')->group(function () {
             Route::put('/{venue}', 'update');
             Route::delete('/{venue}', 'destroy');
         });
+
+        Route::prefix('owners')->controller(AdminOwnerController::class)->group(function () {
+            Route::get('/', 'index');
+            Route::post('/', 'store');
+            Route::get('/{id}', 'show');
+            Route::put('/{id}', 'update');
+            Route::delete('/{id}', 'destroy');
+        });
+
+        Route::prefix('users')->controller(AdminUserController::class)->group(function () {
+            Route::get('/', 'index');
+            Route::get('/{id}', 'show');
+            Route::delete('/{id}', 'destroy');
+        });
+
+        Route::get('/transactions', [AdminTransactionController::class, 'index']);
     });
 
     Route::middleware('auth:api_user')->group(function () {

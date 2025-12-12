@@ -21,6 +21,17 @@ class UserResource extends JsonResource
                 ? $this->email_verified_at->locale('id')->translatedFormat('d F Y H:i')
                 : null,
             'joined_at' => $this->created_at->locale('id')->translatedFormat('d F Y'),
+            'booking_history' => $this->whenLoaded('bookings', function () {
+                return $this->bookings->map(function ($booking) {
+                    return [
+                        'id' => $booking->id,
+                        'venue' => $booking->pricingScheme->field->venue->venue_name ?? 'Venue Dihapus',
+                        'field' => $booking->pricingScheme->field->field_name ?? '-',
+                        'date' => $booking->booking_date->format('d M Y'),
+                        'status' => $booking->booking_status,
+                    ];
+                });
+            }),
         ];
     }
 }
