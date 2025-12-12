@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API\V1\Owner;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\V1\Owner\VenuePhoto\DestroyRequest;
 use App\Http\Requests\API\V1\Owner\VenuePhoto\StoreRequest;
+use App\Http\Resources\V1\Owner\VenuePhotoResource;
 use App\Models\Venue;
 use App\Models\VenuePhoto;
 use App\Services\Owner\VenuePhotoService;
@@ -40,7 +41,7 @@ class VenuePhotoController extends Controller
                 ->with('venue:id,venue_name')
                 ->get();
 
-            return $this->sendSuccessWithData($data, 'Berhasil menampilkan foto.', 200);
+            return $this->sendSuccessWithData(VenuePhotoResource::collection($data), 'Berhasil menampilkan foto.', 200);
         } catch (Exception $e) {
             return $this->sendInternalError($e);
         }
@@ -56,7 +57,7 @@ class VenuePhotoController extends Controller
 
             $venuePhoto = $this->venuePhotoService->createPhoto($request->validated(), $venue);
 
-            return $this->sendSuccessWithData($venuePhoto, 'Foto venue berhasil ditambahkan.', 201);
+            return $this->sendSuccessWithData(new VenuePhotoResource($venuePhoto), 'Foto venue berhasil ditambahkan.', 201);
         } catch (Exception $e) {
             return $this->sendInternalError($e);
         }

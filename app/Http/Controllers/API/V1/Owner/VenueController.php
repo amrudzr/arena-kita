@@ -64,7 +64,7 @@ class VenueController extends Controller
         try {
             $venue = $this->venueService->createVenue($request->validated());
 
-            return $this->sendSuccessWithData($venue, 'Venue berhasil ditambahkan.', 201);
+            return $this->sendSuccessWithData(new VenueResource($venue), 'Venue berhasil ditambahkan.', 201);
         } catch (Exception $e) {
             return $this->sendInternalError($e);
         }
@@ -81,7 +81,7 @@ class VenueController extends Controller
 
             $update = $this->venueService->updateVenue($request->validated(), $venue);
 
-            return $this->sendSuccessWithData($update, 'Venue berhasil diperbarui.', 200);
+            return $this->sendSuccessWithData(new VenueResource($venue->refresh()), 'Venue berhasil diperbarui.', 200);
         } catch (Exception $e) {
             return $this->sendInternalError($e);
         }
@@ -96,9 +96,9 @@ class VenueController extends Controller
                 return $this->sendError('Tidak dapat mengakses venue yang bukan milik Anda.', [], 403);
             }
 
-            $delete = $this->venueService->deleteVenue($venue);
+            $this->venueService->deleteVenue($venue);
 
-            return $this->sendSuccessWithData($delete, 'Venue berhasil dihapus.', 200);
+            return $this->sendSuccess('Venue berhasil dihapus.', 200);
         } catch (Exception $e) {
             return $this->sendInternalError($e);
         }
