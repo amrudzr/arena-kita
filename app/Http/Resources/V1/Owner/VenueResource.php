@@ -13,12 +13,10 @@ class VenueResource extends JsonResource
             return $this->venuePhoto->first();
         });
 
-        $thumbnailUrl = 'https://placehold.co/300x200/0d47a1/ffffff?text=Venue'; // Default
+        $thumbnailUrl = null;
 
         if ($firstPhoto) {
-            //    Panggil Accessor dari Model VenuePhoto.
-            //    Jika di model nama fungsinya 'venuePhotoUrl', panggil: 'venue_photo_url' (snake_case)
-            $thumbnailUrl = $firstPhoto->venue_photo_url ?? $thumbnailUrl;
+            $thumbnailUrl = $firstPhoto->venue_photo_url;
         }
 
         return [
