@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\API\V1\Owner;
 
-use Exception;
-use App\Models\Booking;
-use Illuminate\Http\Request;
-use App\Traits\ApiResponseTrait;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use App\Services\Owner\BookingService;
-use Illuminate\Validation\ValidationException;
 use App\Http\Resources\V1\Owner\BookingResource;
+use App\Models\Booking;
+use App\Services\Owner\BookingService;
+use App\Traits\ApiResponseTrait;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class BookingController extends Controller
 {
@@ -48,8 +47,8 @@ class BookingController extends Controller
 
             // Urutkan dari yang mainnya paling dekat (segera)
             $bookings = $query->orderBy('booking_date', 'asc')
-                              ->orderBy('start_time', 'asc')
-                              ->paginate(10);
+                ->orderBy('start_time', 'asc')
+                ->paginate(10);
 
             return $this->sendSuccessWithData(
                 BookingResource::collection($bookings),

@@ -19,7 +19,7 @@ class BookingResource extends JsonResource
             'status' => $this->booking_status,
             'created_at' => $this->created_at->format('Y-m-d H:i'),
             'created_at_human' => $this->created_at->diffForHumans(),
-            
+
             'user' => $this->whenLoaded('user', function () {
                 return [
                     'id' => $this->user->id,
