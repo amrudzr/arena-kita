@@ -55,8 +55,9 @@ class AuthController extends Controller
 
             return $this->sendSuccessWithData(
                 [
-                    'user' => $result['user'],
                     'token' => $result['token'],
+                    'token_type' => 'Bearer',
+                    'user' => new UserResource($result['user']),
                 ],
                 'Verifikasi email berhasil.',
                 Response::HTTP_OK
