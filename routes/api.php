@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\PaymentCallbackController;
 use App\Http\Controllers\API\ProfileController;
 use App\Http\Controllers\API\V1\Admin\VenueController as AdminVenueController;
+use App\Http\Controllers\API\V1\BookingController;
 use App\Http\Controllers\API\V1\FieldController;
 use App\Http\Controllers\API\V1\HomeController;
 use App\Http\Controllers\API\V1\Owner\BookingController as OwnerBookingController;
@@ -12,11 +14,13 @@ use App\Http\Controllers\API\V1\Owner\PricingSchemeController as OwnerPricingSch
 use App\Http\Controllers\API\V1\Owner\TransactionController as OwnerTransactionController;
 use App\Http\Controllers\API\V1\Owner\VenueController as OwnerVenueController;
 use App\Http\Controllers\API\V1\Owner\VenuePhotoController as OwnerVenuePhotoController;
+use App\Http\Controllers\API\V1\TransactionController;
 use App\Http\Controllers\API\V1\VenueController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
     Route::get('/home', [HomeController::class, 'index']);
+    Route::post('/transaction/payment', [PaymentCallbackController::class, 'index']);
 
     Route::controller(VenueController::class)->group(function () {
         Route::get('/venues', 'index');
@@ -97,6 +101,15 @@ Route::prefix('v1')->group(function () {
             Route::get('/profile', 'show');
             Route::post('/profile', 'update');
         });
-    });
 
+        Route::controller(BookingController::class)->group(function () {
+            Route::get('/bookings', 'index');
+            Route::post('/bookings', 'store');
+            Route::get('/bookings/{booking}', 'show');
+        });
+
+        Route::controller(TransactionController::class)->group(function () {
+            Route::post('/transactions', 'store');
+        });
+    });
 });
