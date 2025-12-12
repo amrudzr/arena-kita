@@ -9,14 +9,14 @@ class VenueResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        $firstPhoto = $this->whenLoaded('venuePhoto', function () {
-            return $this->venuePhoto->first();
-        });
-
         $thumbnailUrl = null;
 
-        if ($firstPhoto) {
-            $thumbnailUrl = $firstPhoto->venue_photo_url;
+        if ($this->relationLoaded('venuePhoto')) {
+            $firstPhoto = $this->venuePhoto->first();
+
+            if ($firstPhoto) {
+                $thumbnailUrl = $firstPhoto->venue_photo_url;
+            }
         }
 
         return [
