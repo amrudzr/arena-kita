@@ -20,7 +20,7 @@ class VenuePhotoFactory extends Factory
         return [
             'venue_id' => Venue::factory(),
             // 'photo_url' => $this->faker->imageUrl(640, 480, 'sports complex', true),
-            'photo_url' => null,
+            'photo_url' => 'https://placehold.co/300x200/0d47a1/ffffff?text=Venue',
         ];
     }
 }

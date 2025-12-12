@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\ProfileController;
+use App\Http\Controllers\API\V1\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\API\V1\Admin\VenueController as AdminVenueController;
 use App\Http\Controllers\API\V1\FieldController;
 use App\Http\Controllers\API\V1\HomeController;
@@ -83,7 +84,7 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::prefix('admin')->group(function () {
-        Route::get('/dashboard/stats', [DashboardController::class, 'stats']);
+        Route::get('/dashboard/stats', [AdminDashboardController::class, 'stats']);
 
         Route::prefix('venues')->controller(AdminVenueController::class)->group(function () {
             Route::get('/', 'index');
