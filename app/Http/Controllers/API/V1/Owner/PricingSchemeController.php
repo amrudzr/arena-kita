@@ -9,6 +9,7 @@ use App\Models\Field;
 use App\Models\PricingScheme;
 use App\Services\Owner\PricingSchemeService;
 use App\Traits\ApiResponseTrait;
+use Exception;
 
 class PricingSchemeController extends Controller
 {
@@ -36,7 +37,7 @@ class PricingSchemeController extends Controller
             $data = $this->service->createScheme($field, $request->validated());
 
             return $this->sendSuccessWithData(new PricingSchemeResource($data), 'Skema harga berhasil dibuat.', 201);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->sendInternalError($e);
         }
     }
@@ -51,7 +52,7 @@ class PricingSchemeController extends Controller
             $this->service->deleteScheme($pricing);
 
             return $this->sendSuccess('Skema harga berhasil dihapus.');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->sendInternalError($e);
         }
     }

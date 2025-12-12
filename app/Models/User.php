@@ -34,12 +34,15 @@ class User extends Authenticatable
     {
         return Attribute::make(
             get: function ($value) {
-                // $value raw path from DB (e.g: "profile_photos/foto.jpg")
-                if ($value) {
-                    return Storage::disk('public')->url($value);
+                if (! $value) {
+                    return null;
                 }
 
-                return null;
+                if (str_contains($value, 'http')) {
+                    return $value;
+                }
+
+                return Storage::disk('public')->url($value);
             }
         );
     }
