@@ -73,9 +73,10 @@ Route::prefix('v1')->group(function () {
             });
         });
 
-        Route::prefix('bookings/{booking}')->controller(OwnerBookingController::class)->group(function () {
-            Route::post('/approve', 'approve');
-            Route::post('/reject', 'reject');
+        Route::controller(OwnerBookingController::class)->group(function () {
+            Route::get('/bookings', 'index');
+            Route::post('/bookings/{id}/approve', 'approve');
+            Route::post('/bookings/{id}/reject', 'reject');
         });
 
         Route::get('/transactions', [OwnerTransactionController::class, 'index']);
