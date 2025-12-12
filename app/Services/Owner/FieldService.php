@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Owner;
 
 use App\Models\Field;
 use App\Models\Venue;
