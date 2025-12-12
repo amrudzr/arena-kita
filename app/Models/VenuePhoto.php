@@ -24,12 +24,16 @@ class VenuePhoto extends Model
     protected function venuePhotoUrl()
     {
         return Attribute::make(
-            function ($value) {
-                if ($value) {
-                    return Storage::disk('public')->url($value);
+            get: function ($value) {
+                if (! $value) {
+                    return null;
                 }
 
-                return null;
+                if (str_contains($value, 'http')) {
+                    return $value;
+                }
+
+                return Storage::disk('public')->url($value);
             }
         );
     }
