@@ -33,8 +33,7 @@ class User extends Authenticatable
     protected function profilePhotoUrl()
     {
         return Attribute::make(
-            get: function ($value) {
-                // $value raw path from DB (e.g: "profile_photos/foto.jpg")
+            function ($value) {
                 if ($value) {
                     return Storage::disk('public')->url($value);
                 }

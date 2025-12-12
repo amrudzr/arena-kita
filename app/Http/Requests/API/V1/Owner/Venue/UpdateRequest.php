@@ -15,8 +15,8 @@ class UpdateRequest extends FormRequest
             'address' => 'sometimes|string',
             'city' => 'sometimes|string|max:50',
             'gps_coordinate' => 'sometimes|nullable|string|max:100',
-            'opening_times' => 'sometimes|nullable|string|max:100',
-            'closing_times' => 'sometimes|nullable|string|max:100',
+            'opening_time' => 'sometimes|nullable|string|max:100',
+            'closing_time' => 'sometimes|nullable|string|max:100',
             'owner_id' => 'sometimes|exists:owners,id',
         ];
     }

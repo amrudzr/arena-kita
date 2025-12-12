@@ -1,8 +1,16 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\PaymentCallbackController;
 use App\Http\Controllers\API\ProfileController;
+use App\Http\Controllers\API\V1\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\API\V1\Admin\OwnerController as AdminOwnerController;
+use App\Http\Controllers\API\V1\Admin\TransactionController as AdminTransactionController;
+use App\Http\Controllers\API\V1\Admin\UserController as AdminUserController;
 use App\Http\Controllers\API\V1\Admin\VenueController as AdminVenueController;
+use App\Http\Controllers\API\V1\BookingController;
+use App\Http\Controllers\API\V1\FieldController;
+use App\Http\Controllers\API\V1\HomeController;
 use App\Http\Controllers\API\V1\Owner\BookingController as OwnerBookingController;
 use App\Http\Controllers\API\V1\Owner\DashboardController as OwnerDashboardController;
 use App\Http\Controllers\API\V1\Owner\FieldController as OwnerFieldController;
@@ -10,13 +18,20 @@ use App\Http\Controllers\API\V1\Owner\PricingSchemeController as OwnerPricingSch
 use App\Http\Controllers\API\V1\Owner\TransactionController as OwnerTransactionController;
 use App\Http\Controllers\API\V1\Owner\VenueController as OwnerVenueController;
 use App\Http\Controllers\API\V1\Owner\VenuePhotoController as OwnerVenuePhotoController;
+use App\Http\Controllers\API\V1\TransactionController;
 use App\Http\Controllers\API\V1\VenueController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
+    Route::get('/home', [HomeController::class, 'index']);
+    Route::post('/transaction/payment', [PaymentCallbackController::class, 'index']);
+
     Route::controller(VenueController::class)->group(function () {
         Route::get('/venues', 'index');
+        Route::get('/venues/{venue}', 'show');
     });
+
+    Route::get('/fields/{field}/availability', [FieldController::class, 'checkAvailability']);
 
     Route::prefix('auth')->controller(AuthController::class)->group(function () {
         Route::post('/user/register', 'registerUser');
@@ -45,22 +60,28 @@ Route::prefix('v1')->group(function () {
                 Route::prefix('fields')->controller(OwnerFieldController::class)->group(function () {
                     Route::get('/', 'index');
                     Route::post('/', 'store');
-                    Route::get('/{field}', 'show');
-                    Route::put('/{field}', 'update');
-                    Route::delete('/{field}', 'destroy');
                 });
             });
         });
 
-        Route::prefix('fields/{field}/pricing')->controller(OwnerPricingSchemeController::class)->group(function () {
-            Route::get('/', 'index');
-            Route::post('/', 'store');
-            Route::delete('/{pricing}', 'destroy');
+        Route::prefix('fields/{field}')->group(function () {
+            Route::controller(OwnerFieldController::class)->group(function () {
+                Route::get('/', 'show');
+                Route::put('/', 'update');
+                Route::delete('/', 'destroy');
+            });
+
+            Route::prefix('pricing')->controller(OwnerPricingSchemeController::class)->group(function () {
+                Route::get('/', 'index');
+                Route::post('/', 'store');
+                Route::delete('/{pricing}', 'destroy');
+            });
         });
 
-        Route::prefix('bookings/{booking}')->controller(OwnerBookingController::class)->group(function () {
-            Route::post('/approve', 'approve');
-            Route::post('/reject', 'reject');
+        Route::controller(OwnerBookingController::class)->group(function () {
+            Route::get('/bookings', 'index');
+            Route::post('/bookings/{id}/approve', 'approve');
+            Route::post('/bookings/{id}/reject', 'reject');
         });
 
         Route::get('/transactions', [OwnerTransactionController::class, 'index']);
@@ -72,6 +93,8 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::prefix('admin')->group(function () {
+        Route::get('/dashboard/stats', [AdminDashboardController::class, 'stats']);
+
         Route::prefix('venues')->controller(AdminVenueController::class)->group(function () {
             Route::get('/', 'index');
             Route::get('/{venue}', 'show');
@@ -79,6 +102,22 @@ Route::prefix('v1')->group(function () {
             Route::put('/{venue}', 'update');
             Route::delete('/{venue}', 'destroy');
         });
+
+        Route::prefix('owners')->controller(AdminOwnerController::class)->group(function () {
+            Route::get('/', 'index');
+            Route::post('/', 'store');
+            Route::get('/{id}', 'show');
+            Route::put('/{id}', 'update');
+            Route::delete('/{id}', 'destroy');
+        });
+
+        Route::prefix('users')->controller(AdminUserController::class)->group(function () {
+            Route::get('/', 'index');
+            Route::get('/{id}', 'show');
+            Route::delete('/{id}', 'destroy');
+        });
+
+        Route::get('/transactions', [AdminTransactionController::class, 'index']);
     });
 
     Route::middleware('auth:api_user')->group(function () {
@@ -86,6 +125,15 @@ Route::prefix('v1')->group(function () {
             Route::get('/profile', 'show');
             Route::post('/profile', 'update');
         });
-    });
 
+        Route::controller(BookingController::class)->group(function () {
+            Route::get('/bookings', 'index');
+            Route::post('/bookings', 'store');
+            Route::get('/bookings/{booking}', 'show');
+        });
+
+        Route::controller(TransactionController::class)->group(function () {
+            Route::post('/transactions', 'store');
+        });
+    });
 });

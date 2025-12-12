@@ -7,6 +7,7 @@ use App\Http\Requests\API\Auth\LoginRequest;
 use App\Http\Requests\API\Auth\RegisterRequest;
 use App\Http\Requests\API\Auth\VerifyOtpRequest;
 use App\Http\Resources\V1\Owner\OwnerResource;
+use App\Http\Resources\V1\UserResource;
 use App\Services\AuthService;
 use App\Traits\ApiResponseTrait;
 use Exception;
@@ -79,7 +80,8 @@ class AuthController extends Controller
 
             return $this->sendSuccessWithData([
                 'token' => $result['token'],
-                'user' => $result['user'],
+                'token_type' => 'Bearer',
+                'user' => new UserResource($result['user']),
             ], 'Login berhasil.');
 
         } catch (ValidationException $e) {
@@ -103,6 +105,7 @@ class AuthController extends Controller
 
             return $this->sendSuccessWithData([
                 'token' => $result['token'],
+                'token_type' => 'Bearer',
                 'user' => new OwnerResource($user),
             ], 'Login Owner berhasil.');
 

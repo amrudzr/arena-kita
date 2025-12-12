@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\API\V1\Owner;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\Owner\BookingResource;
+use App\Http\Resources\V1\Owner\DashboardStatResource;
 use App\Services\Owner\DashboardService;
 use App\Traits\ApiResponseTrait;
+use Exception;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -25,8 +28,8 @@ class DashboardController extends Controller
 
             $data = $this->service->getOwnerBookings($status);
 
-            return $this->sendSuccessWithData($data, 'Daftar booking berhasil diambil.');
-        } catch (\Exception $e) {
+            return $this->sendSuccessWithData(BookingResource::collection($data), 'Daftar booking berhasil diambil.');
+        } catch (Exception $e) {
             return $this->sendInternalError($e);
         }
     }
@@ -36,8 +39,8 @@ class DashboardController extends Controller
         try {
             $data = $this->service->getStats();
 
-            return $this->sendSuccessWithData($data, 'Statistik dashboard berhasil diambil.');
-        } catch (\Exception $e) {
+            return $this->sendSuccessWithData(new DashboardStatResource($data), 'Statistik dashboard berhasil diambil.');
+        } catch (Exception $e) {
             return $this->sendInternalError($e);
         }
     }
