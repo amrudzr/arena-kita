@@ -35,6 +35,7 @@ Route::prefix('v1')->group(function () {
 
     Route::prefix('auth')->controller(AuthController::class)->group(function () {
         Route::post('/user/register', 'registerUser');
+        Route::post('/user/verify-email', 'verifyUserEmail');
         Route::post('/user/login', 'loginUser');
         Route::post('/owner/login', 'loginOwner');
         Route::post('/logout', 'logout')->middleware(['auth:api_user,api_owner']);
