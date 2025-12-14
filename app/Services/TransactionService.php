@@ -5,8 +5,10 @@ namespace App\Services;
 use App\Models\Booking;
 use App\Models\Transaction;
 use App\Traits\ApiResponseTrait;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Midtrans\CoreApi;
+use Throwable;
 
 class TransactionService
 {
@@ -14,7 +16,7 @@ class TransactionService
 
     public function __construct() {}
 
-    public function createTransaction(array $request)
+    public function createTransaction(array $request): array
     {
         try {
             DB::beginTransaction();
@@ -24,7 +26,7 @@ class TransactionService
             $booking = Booking::findOrFail($request['booking_id']);
 
             if ($booking->user_id !== $user->id) {
-                throw new \Exception('Anda tidak memiliki akses untuk membuat transaksi dari booking ini.');
+                throw new Exception('Anda tidak memiliki akses untuk membuat transaksi dari booking ini.');
             }
 
             if (Transaction::where('booking_id', $request['booking_id'])->exists()) {
@@ -33,7 +35,7 @@ class TransactionService
                 if ($transaction->payment_status === 'EXPIRE') {
                     $transaction->delete();
                 } else {
-                    throw new \Exception('Sudah ada transaksi yang dibuat untuk booking ini.');
+                    throw new Exception('Sudah ada transaksi yang dibuat untuk booking ini.');
                 }
             }
 
@@ -66,6 +68,7 @@ class TransactionService
                 'booking_id' => $booking->id,
                 'payment_method' => $request['payment_method'],
                 'payment_status' => strtoupper($midtransResponse->transaction_status),
+                'gateway_transaction_code' => $midtransResponse->actions[0]->url,
             ]);
 
             DB::commit();
@@ -75,7 +78,7 @@ class TransactionService
                 'transaction' => $transaction,
                 'qr_image_url' => $midtransResponse->actions[0]->url ?? null,
             ];
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             DB::rollBack();
             throw $th;
         }
