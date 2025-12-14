@@ -12,19 +12,19 @@ class BookingService
     {
         $booking->loadMissing(['pricingScheme.field.venue']);
 
-        if (!$booking->pricingScheme) {
+        if (! $booking->pricingScheme) {
             throw ValidationException::withMessages([
-                'booking' => "Booking mengarah ke Skema Harga yang tidak ditemukan.",
+                'booking' => 'Booking mengarah ke Skema Harga yang tidak ditemukan.',
             ]);
         }
 
-        if (!$booking->pricingScheme->field) {
+        if (! $booking->pricingScheme->field) {
             throw ValidationException::withMessages([
                 'booking' => 'Lapangan untuk booking ini tidak ditemukan.',
             ]);
         }
 
-        if (!$booking->pricingScheme->field->venue) {
+        if (! $booking->pricingScheme->field->venue) {
             throw ValidationException::withMessages([
                 'booking' => 'Venue untuk booking ini tidak ditemukan.',
             ]);
