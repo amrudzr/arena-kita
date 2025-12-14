@@ -15,8 +15,7 @@ class UserResource extends JsonResource
             'email' => $this->email,
             'phone_number' => $this->phone_number,
             'role' => $this->role,
-            'profile_photo_url' => $this->profile_photo_url
-                ?? 'https://placehold.co/200x200/0d47a1/ffffff?text='.urlencode($this->full_name),
+            'profile_photo_url' => $this->profile_photo_url,
             'email_verified_at' => $this->email_verified_at
                 ? $this->email_verified_at->locale('id')->translatedFormat('d F Y H:i')
                 : null,

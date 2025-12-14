@@ -35,6 +35,7 @@ Route::prefix('v1')->group(function () {
 
     Route::prefix('auth')->controller(AuthController::class)->group(function () {
         Route::post('/user/register', 'registerUser');
+        Route::post('/user/verify-email', 'verifyUserEmail');
         Route::post('/user/login', 'loginUser');
         Route::post('/owner/login', 'loginOwner');
         Route::post('/logout', 'logout')->middleware(['auth:api_user,api_owner']);
@@ -79,8 +80,8 @@ Route::prefix('v1')->group(function () {
 
         Route::controller(OwnerBookingController::class)->group(function () {
             Route::get('/bookings', 'index');
-            Route::post('/bookings/{id}/approve', 'approve');
-            Route::post('/bookings/{id}/reject', 'reject');
+            Route::post('/bookings/{booking}/approve', 'approve');
+            Route::post('/bookings/{booking}/reject', 'reject');
         });
 
         Route::get('/transactions', [OwnerTransactionController::class, 'index']);

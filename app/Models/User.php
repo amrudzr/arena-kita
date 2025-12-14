@@ -33,16 +33,12 @@ class User extends Authenticatable
     protected function profilePhotoUrl()
     {
         return Attribute::make(
-            get: function ($value) {
-                if (! $value) {
-                    return null;
+            function ($value) {
+                if ($value) {
+                    return Storage::disk('public')->url($value);
                 }
 
-                if (str_contains($value, 'http')) {
-                    return $value;
-                }
-
-                return Storage::disk('public')->url($value);
+                return null;
             }
         );
     }
@@ -50,5 +46,10 @@ class User extends Authenticatable
     public function bookings()
     {
         return $this->hasMany(Booking::class);
+    }
+
+    public function activeOtp()
+    {
+        return $this->hasOne(UserOtp::class, 'user_id')->where('expired_at', '>', now());
     }
 }

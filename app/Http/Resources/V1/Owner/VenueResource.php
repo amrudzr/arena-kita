@@ -9,16 +9,14 @@ class VenueResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        $firstPhoto = $this->whenLoaded('venuePhoto', function () {
-            return $this->venuePhoto->first();
-        });
+        $thumbnailUrl = null;
 
-        $thumbnailUrl = 'https://placehold.co/300x200/0d47a1/ffffff?text=Venue'; // Default
+        if ($this->relationLoaded('venuePhoto')) {
+            $firstPhoto = $this->venuePhoto->first();
 
-        if ($firstPhoto) {
-            //    Panggil Accessor dari Model VenuePhoto.
-            //    Jika di model nama fungsinya 'venuePhotoUrl', panggil: 'venue_photo_url' (snake_case)
-            $thumbnailUrl = $firstPhoto->venue_photo_url ?? $thumbnailUrl;
+            if ($firstPhoto) {
+                $thumbnailUrl = $firstPhoto->venue_photo_url;
+            }
         }
 
         return [

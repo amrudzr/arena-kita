@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Listeners\SendOtpListener;
 use App\Services\Owner\VenueService;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -10,6 +12,12 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
+    protected $listen = [
+        Registered::class => [
+            SendOtpListener::class,
+        ],
+    ];
+
     /**
      * Register any application services.
      */

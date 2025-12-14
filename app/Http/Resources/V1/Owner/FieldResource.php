@@ -14,7 +14,7 @@ class FieldResource extends JsonResource
             'name' => $this->field_name,
             'type' => $this->sport_type,
             'status' => $this->status,
-            'photo_url' => $this->field_photo_url ?? 'https://placehold.co/300x200/0d47a1/ffffff?text=Field',
+            'photo_url' => $this->field_photo_url,
             'venue' => new VenueResource($this->whenLoaded('venue')),
             'pricing_schemes' => PricingSchemeResource::collection($this->whenLoaded('pricingSchemes')),
         ];
