@@ -20,10 +20,11 @@ class BookingService
 
     public function detailBooking($booking): array
     {
-        $pricingScheme = PricingScheme::findOrFail($booking->pricing_scheme_id);
-        $field = Field::findOrFail($pricingScheme->field_id);
-        $venue = Venue::findOrFail($field->venue_id);
-        $transaction = Transaction::findOrFail($booking->id);
+        $pricingScheme = PricingScheme::find($booking->pricing_scheme_id);
+        $field = Field::find($pricingScheme->field_id);
+        $venue = Venue::find($field->venue_id);
+
+        $transaction = Transaction::where('booking_id', $booking->id)->first();
 
         return [
             'venue_name' => $venue->venue_name,
@@ -36,8 +37,9 @@ class BookingService
             'start_time' => $booking->start_time,
             'end_time' => $booking->end_time,
             'total_price' => $booking->total_price,
-            'payment_status' => $transaction->payment_status,
-            'booking_status' => $booking->status,
+            'payment_status' => $transaction ? $transaction->payment_status : 'BELUM DIBAYAR',
+            'booking_status' => $booking->booking_status,
+            'qr_url' => $transaction?->gateway_transaction_code,
         ];
     }
 }

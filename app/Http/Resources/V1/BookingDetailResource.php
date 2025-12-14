@@ -30,6 +30,7 @@ class BookingDetailResource extends JsonResource
                 'price' => $this['price'],
             ],
             'payment' => [
+                'qr_url' => $this['qr_url'],
                 'payment_status' => $this['payment_status'],
             ],
         ];
