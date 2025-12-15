@@ -40,6 +40,25 @@ class BookingService
         }
     }
 
+    public function getOwnerBookingsQuery(?string $statusFilter = null)
+    {
+        $ownerId = Auth::guard('api_owner')->id();
+
+        $query = Booking::query()
+            ->whereHas('pricingScheme.field.venue', function ($q) use ($ownerId) {
+                $q->where('owner_id', $ownerId);
+            })
+            ->whereHas('transaction')
+            ->with(['user', 'pricingScheme.field.venue', 'transaction']);
+
+        if ($statusFilter) {
+            $query->where('booking_status', $statusFilter);
+        }
+
+        return $query->orderBy('booking_date', 'asc')
+                     ->orderBy('start_time', 'asc');
+    }
+
     public function approveBooking(Booking $booking)
     {
         $this->ensureOwnership($booking);

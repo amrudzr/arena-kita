@@ -26,29 +26,14 @@ class BookingController extends Controller
     public function index(Request $request)
     {
         try {
-            $ownerId = Auth::guard('api_owner')->id();
+            $query = $this->service->getOwnerBookingsQuery($request->query('status'));
+            $limit = $request->input('limit', 10);
 
-            // Ambil filter status dari URL parameter jika ada
-            $status = $request->query('status');
-
-            $query = Booking::query()
-                // 1. Filter Booking milik Owner ini saja
-                // (Booking -> Pricing -> Field -> Venue -> Owner)
-                ->whereHas('pricingScheme.field.venue', function ($q) use ($ownerId) {
-                    $q->where('owner_id', $ownerId);
-                })
-                // 2. Load relasi agar data lengkap (N+1 Solution)
-                ->with(['user', 'pricingScheme.field.venue']);
-
-            // 3. Terapkan Filter Status (Jika ada)
-            if ($status) {
-                $query->where('booking_status', $status);
+            if ($limit > 100) {
+                $limit = 100;
             }
 
-            // Urutkan dari yang mainnya paling dekat (segera)
-            $bookings = $query->orderBy('booking_date', 'asc')
-                ->orderBy('start_time', 'asc')
-                ->paginate(10);
+            $bookings = $query->paginate($limit);
 
             return $this->sendSuccessWithData(
                 BookingResource::collection($bookings),

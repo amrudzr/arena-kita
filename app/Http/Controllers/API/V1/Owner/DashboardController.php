@@ -24,11 +24,18 @@ class DashboardController extends Controller
     public function bookings(Request $request)
     {
         try {
-            $status = $request->query('status');
+            $query = $this->service->getOwnerBookingsQuery($request->query('status'));
 
-            $data = $this->service->getOwnerBookings($status);
+            $limit = $request->input('limit', 5);
 
-            return $this->sendSuccessWithData(BookingResource::collection($data), 'Daftar booking berhasil diambil.');
+            if ($limit > 100) $limit = 100;
+
+            $data = $query->paginate($limit);
+
+            return $this->sendSuccessWithData(
+                BookingResource::collection($data),
+                'Daftar booking dashboard berhasil diambil.'
+            );
         } catch (Exception $e) {
             return $this->sendInternalError($e);
         }

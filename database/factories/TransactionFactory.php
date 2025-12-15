@@ -20,7 +20,7 @@ class TransactionFactory extends Factory
         return [
             'booking_id' => Booking::factory(),
             'payment_method' => $this->faker->randomElement(['BCA VA', 'GoPay', 'OVO']),
-            'payment_status' => 'SUCCESS',
+            'payment_status' => $this->faker->randomElement(['PENDING', 'SUCCESS', 'EXPIRED', 'FAILED']),
             'payment_time' => $this->faker->dateTimeThisMonth(),
             'gateway_transaction_code' => $this->faker->unique()->sha1(),
         ];
