@@ -9,7 +9,6 @@ use App\Services\Owner\BookingService;
 use App\Traits\ApiResponseTrait;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class BookingController extends Controller

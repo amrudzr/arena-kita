@@ -28,7 +28,9 @@ class DashboardController extends Controller
 
             $limit = $request->input('limit', 5);
 
-            if ($limit > 100) $limit = 100;
+            if ($limit > 100) {
+                $limit = 100;
+            }
 
             $data = $query->paginate($limit);
 

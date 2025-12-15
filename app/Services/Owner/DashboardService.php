@@ -23,7 +23,7 @@ class DashboardService
         }
 
         return $query->orderBy('booking_date', 'asc')
-                     ->orderBy('start_time', 'asc');
+            ->orderBy('start_time', 'asc');
     }
 
     public function getStats()
