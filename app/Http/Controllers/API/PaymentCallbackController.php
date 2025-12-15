@@ -28,7 +28,7 @@ class PaymentCallbackController extends Controller
 
         if ($transactionStatus == 'capture' || $transactionStatus == 'settlement') {
             $transaction->payment_status = 'SUCCESS';
-            $booking->booking_status = 'SUCCESS';
+            $booking->booking_status = 'CONFIRMED';
             $transaction->payment_time = now();
         } elseif ($transactionStatus == 'expire') {
             $transaction->payment_status = 'EXPIRE';
