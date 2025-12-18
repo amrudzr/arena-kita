@@ -17,8 +17,9 @@ class ReCaptcha implements ValidationRule
 
         $res = $response->json();
 
-        if (!$res['success']) {
+        if (! $res['success']) {
             $fail('Verifikasi Captcha gagal atau token kedaluwarsa.');
+
             return;
         }
 
