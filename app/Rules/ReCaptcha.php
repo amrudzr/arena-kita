@@ -5,6 +5,7 @@ namespace App\Rules;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class ReCaptcha implements ValidationRule
 {
@@ -14,6 +15,8 @@ class ReCaptcha implements ValidationRule
             'secret' => config('services.recaptcha.secret'),
             'response' => $value,
         ]);
+
+        Log::info('reCAPTCHA Response:', $response->json());
 
         $res = $response->json();
 
