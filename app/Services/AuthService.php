@@ -7,6 +7,7 @@ use App\Models\UserOtp;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 
@@ -103,6 +104,8 @@ class AuthService
 
         $providerName = config("auth.guards.$guard.provider");
         $modelClass = config("auth.providers.$providerName.model");
+
+        Log::info('Attempting login for guard: '.$guard.' with provider: '.$providerName);
 
         $user = $modelClass::where('email', $credentials['email'])->first();
 
