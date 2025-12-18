@@ -5,7 +5,9 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\Auth\LoginRequest;
 use App\Http\Requests\API\Auth\RegisterRequest;
+use App\Http\Requests\API\Auth\VerifyOtpRequest;
 use App\Http\Resources\V1\Owner\OwnerResource;
+use App\Http\Resources\V1\UserResource;
 use App\Services\AuthService;
 use App\Traits\ApiResponseTrait;
 use Exception;
@@ -32,9 +34,8 @@ class AuthController extends Controller
             return $this->sendSuccessWithData(
                 [
                     'user' => $result['user'],
-                    'token' => $result['token'],
                 ],
-                'Registrasi berhasil.',
+                'Silahkan cek email Anda untuk verifikasi akun.',
                 Response::HTTP_CREATED
             );
         } catch (Exception $e) {
@@ -47,6 +48,32 @@ class AuthController extends Controller
         }
     }
 
+    public function verifyUserEmail(VerifyOtpRequest $request)
+    {
+        try {
+            $result = $this->authService->verifyOtp($request->validated());
+
+            return $this->sendSuccessWithData(
+                [
+                    'token' => $result['token'],
+                    'token_type' => 'Bearer',
+                    'user' => new UserResource($result['user']),
+                ],
+                'Verifikasi email berhasil.',
+                Response::HTTP_OK
+            );
+        } catch (ValidationException $e) {
+            throw $e;
+        } catch (Exception $e) {
+            $context = [
+                'context' => __METHOD__,
+                'email' => $request->input('email'),
+            ];
+
+            return $this->sendInternalError($e, 'Gagal melakukan verifikasi email.', 500, $context);
+        }
+    }
+
     public function loginUser(LoginRequest $request)
     {
         try {
@@ -54,7 +81,8 @@ class AuthController extends Controller
 
             return $this->sendSuccessWithData([
                 'token' => $result['token'],
-                'user' => $result['user'],
+                'token_type' => 'Bearer',
+                'user' => new UserResource($result['user']),
             ], 'Login berhasil.');
 
         } catch (ValidationException $e) {
@@ -78,6 +106,7 @@ class AuthController extends Controller
 
             return $this->sendSuccessWithData([
                 'token' => $result['token'],
+                'token_type' => 'Bearer',
                 'user' => new OwnerResource($user),
             ], 'Login Owner berhasil.');
 

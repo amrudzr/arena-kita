@@ -10,6 +10,26 @@ class BookingService
 {
     private function ensureOwnership(Booking $booking)
     {
+        $booking->loadMissing(['pricingScheme.field.venue']);
+
+        if (! $booking->pricingScheme) {
+            throw ValidationException::withMessages([
+                'booking' => 'Booking mengarah ke Skema Harga yang tidak ditemukan.',
+            ]);
+        }
+
+        if (! $booking->pricingScheme->field) {
+            throw ValidationException::withMessages([
+                'booking' => 'Lapangan untuk booking ini tidak ditemukan.',
+            ]);
+        }
+
+        if (! $booking->pricingScheme->field->venue) {
+            throw ValidationException::withMessages([
+                'booking' => 'Venue untuk booking ini tidak ditemukan.',
+            ]);
+        }
+
         $bookingOwnerId = $booking->pricingScheme->field->venue->owner_id;
         $currentOwnerId = Auth::guard('api_owner')->id();
 
@@ -18,6 +38,25 @@ class BookingService
                 'booking' => 'Anda tidak memiliki akses ke booking ini.',
             ]);
         }
+    }
+
+    public function getOwnerBookingsQuery(?string $statusFilter = null)
+    {
+        $ownerId = Auth::guard('api_owner')->id();
+
+        $query = Booking::query()
+            ->whereHas('pricingScheme.field.venue', function ($q) use ($ownerId) {
+                $q->where('owner_id', $ownerId);
+            })
+            ->whereHas('transaction')
+            ->with(['user', 'pricingScheme.field.venue', 'transaction']);
+
+        if ($statusFilter) {
+            $query->where('booking_status', $statusFilter);
+        }
+
+        return $query->orderBy('booking_date', 'asc')
+            ->orderBy('start_time', 'asc');
     }
 
     public function approveBooking(Booking $booking)

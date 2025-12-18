@@ -17,7 +17,7 @@ class PricingSchemeFactory extends Factory
      */
     public function definition(): array
     {
-        $duration = $this->faker->randomElement([60, 90, 120]);
+        $duration = $this->faker->randomElement([60]);
 
         return [
             'field_id' => Field::factory(),

@@ -8,6 +8,7 @@ use App\Models\Booking;
 use App\Services\Owner\BookingService;
 use App\Traits\ApiResponseTrait;
 use Exception;
+use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 class BookingController extends Controller
@@ -19,6 +20,27 @@ class BookingController extends Controller
     public function __construct(BookingService $service)
     {
         $this->service = $service;
+    }
+
+    public function index(Request $request)
+    {
+        try {
+            $query = $this->service->getOwnerBookingsQuery($request->query('status'));
+            $limit = $request->input('limit', 10);
+
+            if ($limit > 100) {
+                $limit = 100;
+            }
+
+            $bookings = $query->paginate($limit);
+
+            return $this->sendSuccessWithData(
+                BookingResource::collection($bookings),
+                'Daftar booking berhasil diambil.'
+            );
+        } catch (Exception $e) {
+            return $this->sendInternalError($e);
+        }
     }
 
     public function approve(Booking $booking)

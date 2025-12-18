@@ -26,7 +26,9 @@ class RegisterRequest extends FormRequest
     {
         return [
             'full_name' => 'required|string|max:100',
-            'email' => 'required|string|email|max:100|unique:users',
+            'email' => ['required', 'string', 'email', 'max:100', Rule::unique('users', 'email')->where(function ($query) {
+                return $query->whereNotNull('email_verified_at');
+            }), ],
             'phone_number' => 'required|string|max:20',
             'password' => ['required', 'confirmed', Password::min(8)],
             'captcha_token' => ['required', new ReCaptcha]

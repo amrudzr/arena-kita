@@ -17,7 +17,10 @@ class BookingResource extends JsonResource
             'total_price' => 'Rp '.number_format($this->total_price, 0, ',', '.'),
             'raw_total_price' => (float) $this->total_price,
             'status' => $this->booking_status,
+            'payment_status' => $this->transaction ? $this->transaction->payment_status : 'UNPAID',
+            'payment_method' => $this->transaction ? $this->transaction->payment_method : null,
             'created_at' => $this->created_at->format('Y-m-d H:i'),
+            'created_at_human' => $this->created_at->diffForHumans(),
 
             'user' => $this->whenLoaded('user', function () {
                 return [

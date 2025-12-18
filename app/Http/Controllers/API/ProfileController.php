@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\API\Profile\UpdateRequest;
+use App\Http\Resources\V1\UserResource;
 use App\Services\ProfileService;
 use App\Traits\ApiResponseTrait;
 use Exception;
@@ -23,7 +24,7 @@ class ProfileController extends Controller
     public function show(Request $request)
     {
         return $this->sendSuccessWithData(
-            $request->user(),
+            new UserResource($request->user()),
             'Data profil berhasil diambil.'
         );
     }
@@ -37,7 +38,7 @@ class ProfileController extends Controller
             $updatedUser = $this->profileService->updateProfile($user, $request->validated());
 
             return $this->sendSuccessWithData(
-                $updatedUser,
+                new UserResource($user),
                 'Profil berhasil diperbarui.'
             );
 
