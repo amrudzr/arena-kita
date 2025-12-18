@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests\API\Auth;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\ReCaptcha;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
+use Illuminate\Foundation\Http\FormRequest;
 
 class RegisterRequest extends FormRequest
 {
@@ -27,6 +29,7 @@ class RegisterRequest extends FormRequest
             'email' => 'required|string|email|max:100|unique:users',
             'phone_number' => 'required|string|max:20',
             'password' => ['required', 'confirmed', Password::min(8)],
+            'captcha_token' => ['required', new ReCaptcha]
         ];
     }
 
@@ -46,6 +49,7 @@ class RegisterRequest extends FormRequest
             'password.required' => 'Password wajib diisi.',
             'password.confirmed' => 'Konfirmasi password tidak cocok.',
             'password.min' => 'Password minimal harus 8 karakter.',
+            'captcha_token.required' => 'Mohon selesaikan tantangan Captcha.',
         ];
     }
 }
