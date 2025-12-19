@@ -7,6 +7,8 @@ use App\Models\UserOtp;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 
 class AuthService
@@ -98,16 +100,24 @@ class AuthService
 
     public function attemptLogin(string $guard, array $credentials)
     {
+        $key = 'login-attempts:'.request()->ip().$credentials['email'];
+
         $providerName = config("auth.guards.$guard.provider");
         $modelClass = config("auth.providers.$providerName.model");
+
+        Log::info('Attempting login for guard: '.$guard.' with provider: '.$providerName);
 
         $user = $modelClass::where('email', $credentials['email'])->first();
 
         if (! $user || ! Hash::check($credentials['password'], $user->password)) {
+            RateLimiter::hit($key, 300);
+
             throw ValidationException::withMessages([
                 'email' => ['Email atau password salah.'],
             ]);
         }
+
+        RateLimiter::clear($key);
 
         $plainTextToken = $user->createToken('auth-token-'.$user->id)->plainTextToken;
 
