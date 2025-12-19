@@ -10,15 +10,17 @@ class VenueService
 
     public function createVenue(array $request)
     {
-        return Venue::class->create($request);
+        return Venue::create($request);
     }
 
-    public function updateVenue(array $request, $venue)
+    public function updateVenue(array $request, Venue $venue)
     {
-        return $venue->update($request);
+        $venue->update($request);
+
+        return $venue;
     }
 
-    public function deleteVenue($venue)
+    public function deleteVenue(Venue $venue)
     {
         return $venue->delete();
     }

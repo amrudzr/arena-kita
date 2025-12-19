@@ -92,30 +92,14 @@ Route::prefix('v1')->group(function () {
         });
     });
 
-    Route::prefix('admin')->group(function () {
+    Route::middleware(['auth:api_user', 'role:admin'])->prefix('admin')->group(function () {
         Route::get('/dashboard/stats', [AdminDashboardController::class, 'stats']);
 
-        Route::prefix('venues')->controller(AdminVenueController::class)->group(function () {
-            Route::get('/', 'index');
-            Route::get('/{venue}', 'show');
-            Route::post('/', 'store');
-            Route::put('/{venue}', 'update');
-            Route::delete('/{venue}', 'destroy');
-        });
+        Route::apiResource('venues', AdminVenueController::class);
 
-        Route::prefix('owners')->controller(AdminOwnerController::class)->group(function () {
-            Route::get('/', 'index');
-            Route::post('/', 'store');
-            Route::get('/{id}', 'show');
-            Route::put('/{id}', 'update');
-            Route::delete('/{id}', 'destroy');
-        });
+        Route::apiResource('owners', AdminOwnerController::class);
 
-        Route::prefix('users')->controller(AdminUserController::class)->group(function () {
-            Route::get('/', 'index');
-            Route::get('/{id}', 'show');
-            Route::delete('/{id}', 'destroy');
-        });
+        Route::apiResource('users', AdminUserController::class)->except(['store', 'update']);
 
         Route::get('/transactions', [AdminTransactionController::class, 'index']);
     });

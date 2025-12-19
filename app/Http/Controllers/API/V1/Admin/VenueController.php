@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\API\V1\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\API\V1\Admin\Venue\DestroyRequest;
 use App\Http\Requests\API\V1\Admin\Venue\StoreRequest;
 use App\Http\Requests\API\V1\Admin\Venue\UpdateRequest;
+use App\Http\Resources\V1\Admin\VenueResource;
 use App\Models\Venue;
 use App\Services\Admin\VenueService;
 use App\Traits\ApiResponseTrait;
 use Exception;
+use Illuminate\Http\Request;
 
 class VenueController extends Controller
 {
@@ -22,12 +23,19 @@ class VenueController extends Controller
         $this->venueService = $venueService;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $data = Venue::with('owner:id,full_name,email')->get();
+            $limit = $request->input('limit', 10);
 
-            return $this->sendSuccessWithData($data, 'Berhasil menampilkan.', 200);
+            $data = Venue::with('owner:id,full_name,email')
+                ->latest()
+                ->paginate($limit);
+
+            return $this->sendSuccessWithData(
+                VenueResource::collection($data),
+                'Berhasil menampilkan daftar venue.'
+            );
         } catch (Exception $e) {
             return $this->sendInternalError($e);
         }
@@ -36,9 +44,20 @@ class VenueController extends Controller
     public function show(Venue $venue)
     {
         try {
-            $data = Venue::with('owner:id,full_name,email')->find($venue->id);
+            $venue = $venue->with([
+                'owner:id,full_name,email',
+                'venuePhoto',
+                'fields',
+            ])->find($venue);
 
-            return $this->sendSuccessWithData($data, 'Berhasil menampilkan.', 200);
+            if (! $venue) {
+                return $this->sendError('Venue tidak ditemukan.', [], 404);
+            }
+
+            return $this->sendSuccessWithData(
+                new VenueResource($venue),
+                'Detail venue berhasil diambil.'
+            );
         } catch (Exception $e) {
             return $this->sendInternalError($e);
         }
@@ -49,7 +68,13 @@ class VenueController extends Controller
         try {
             $venue = $this->venueService->createVenue($request->validated());
 
-            return $this->sendSuccessWithData($venue, 'Venue berhasil ditambahkan.', 201);
+            $venue->load('owner:id,full_name,email');
+
+            return $this->sendSuccessWithData(
+                new VenueResource($venue),
+                'Venue berhasil ditambahkan.',
+                201
+            );
         } catch (Exception $e) {
             return $this->sendInternalError($e);
         }
@@ -58,20 +83,25 @@ class VenueController extends Controller
     public function update(UpdateRequest $request, Venue $venue)
     {
         try {
-            $venue = $this->venueService->updateVenue($request->validated(), $venue);
+            $updatedVenue = $this->venueService->updateVenue($request->validated(), $venue);
 
-            return $this->sendSuccessWithData($venue, 'Venue berhasil diupdate.', 200);
+            $updatedVenue->load('owner:id,full_name,email', 'venuePhoto', 'fields');
+
+            return $this->sendSuccessWithData(
+                new VenueResource($updatedVenue),
+                'Venue berhasil diperbarui.'
+            );
         } catch (Exception $e) {
             return $this->sendInternalError($e);
         }
     }
 
-    public function destroy(DestroyRequest $request, Venue $venue)
+    public function destroy(Venue $venue)
     {
         try {
-            $venue = $this->venueService->deleteVenue($venue);
+            $this->venueService->deleteVenue($venue);
 
-            return $this->sendSuccessWithData($venue, 'Venue berhasil dihapus.', 200);
+            return $this->sendSuccess('Venue berhasil dihapus.', 200);
         } catch (Exception $e) {
             return $this->sendInternalError($e);
         }

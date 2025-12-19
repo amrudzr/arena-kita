@@ -20,7 +20,7 @@ class OwnerResource extends JsonResource
                 'account_name' => $this->account_name,
             ],
             'total_venues' => $this->whenCounted('venues'),
-            'joined_at' => $this->created_at->locale('id')->translatedFormat('d F Y'),
+            'created_at' => $this->created_at->format('Y-m-d H:i'),
         ];
     }
 }

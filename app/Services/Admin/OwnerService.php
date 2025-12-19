@@ -23,9 +23,9 @@ class OwnerService
     public function updateOwner(Owner $owner, array $data)
     {
         $updateData = [
-            'full_name' => $data['name'],
+            'full_name' => $data['name'] ?? $owner->full_name,
             'email' => $data['email'],
-            'phone_number' => $data['phone'] ?? null,
+            'phone_number' => $data['phone'] ?? $owner->phone_number,
             'bank_name' => $data['bank_name'] ?? $owner->bank_name,
             'account_number' => $data['account_number'] ?? $owner->account_number,
             'account_name' => $data['account_name'] ?? $owner->account_name,
