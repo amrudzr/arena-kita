@@ -51,7 +51,7 @@ class RegisterRequest extends FormRequest
             'password.required' => 'Password wajib diisi.',
             'password.confirmed' => 'Konfirmasi password tidak cocok.',
             'password.min' => 'Password minimal harus 8 karakter.',
-            'captcha_token.required' => 'Mohon selesaikan tantangan Captcha.',
+            'captcha_token.required' => 'Keamanan mendeteksi aktivitas mencurigakan, mohon selesaikan Captcha.',
         ];
     }
 }

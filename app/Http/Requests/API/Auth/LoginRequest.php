@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\API\Auth;
 
+use App\Helpers\LoginThrottle;
 use App\Rules\ReCaptcha;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -48,7 +49,7 @@ class LoginRequest extends FormRequest
             'email.required' => 'Email wajib diisi.',
             'email.email' => 'Format email tidak valid.',
             'password.required' => 'Password wajib diisi.',
-            'captcha_token.required' => 'Mohon selesaikan tantangan Captcha.',
+            'captcha_token.required' => 'Keamanan mendeteksi aktivitas mencurigakan, mohon selesaikan Captcha.',
         ];
     }
 }
