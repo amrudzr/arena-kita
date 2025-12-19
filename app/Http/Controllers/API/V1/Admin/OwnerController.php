@@ -27,7 +27,6 @@ class OwnerController extends Controller
     {
         try {
             $limit = $request->input('limit', 10);
-
             if ($limit > 100) {
                 $limit = 100;
             }
@@ -60,14 +59,10 @@ class OwnerController extends Controller
         }
     }
 
-    public function show($id)
+    public function show(Owner $owner)
     {
         try {
-            $owner = Owner::withCount('venues')->find($id);
-
-            if (! $owner) {
-                return $this->sendError('Owner tidak ditemukan.', [], 404);
-            }
+            $owner->loadCount('venues');
 
             return $this->sendSuccessWithData(
                 new OwnerResource($owner),
@@ -78,14 +73,9 @@ class OwnerController extends Controller
         }
     }
 
-    public function update(UpdateOwnerRequest $request, $id)
+    public function update(UpdateOwnerRequest $request, Owner $owner)
     {
         try {
-            $owner = Owner::find($id);
-            if (! $owner) {
-                return $this->sendError('Owner tidak ditemukan.', [], 404);
-            }
-
             $updatedOwner = $this->ownerService->updateOwner($owner, $request->validated());
 
             return $this->sendSuccessWithData(
@@ -97,16 +87,10 @@ class OwnerController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function destroy(Owner $owner)
     {
         try {
-            $owner = Owner::find($id);
-            if (! $owner) {
-                return $this->sendError('Owner tidak ditemukan.', [], 404);
-            }
-
-            // Cek aset sebelum hapus
-            if ($owner->venues()->count() > 0) {
+            if ($owner->venues()->exists()) {
                 return $this->sendError('Tidak dapat menghapus Owner yang masih memiliki Venue aktif.', [], 400);
             }
 

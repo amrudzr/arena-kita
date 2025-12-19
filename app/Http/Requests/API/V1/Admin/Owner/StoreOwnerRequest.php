@@ -23,4 +23,27 @@ class StoreOwnerRequest extends FormRequest
             'account_name' => 'nullable|string|max:100',
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Nama lengkap wajib diisi.',
+            'name.string' => 'Nama lengkap harus berupa teks.',
+            'name.max' => 'Nama lengkap tidak boleh lebih dari 100 karakter.',
+            'email.required' => 'Alamat email wajib diisi.',
+            'email.email' => 'Mohon masukkan alamat email yang valid.',
+            'email.unique' => 'Email ini sudah terdaftar. Silakan gunakan email lain.',
+            'password.required' => 'Password wajib diisi.',
+            'password.string' => 'Password harus berupa teks.',
+            'password.min' => 'Password minimal harus 8 karakter.',
+            'phone.string' => 'Nomor telepon harus berupa teks.',
+            'phone.max' => 'Nomor telepon tidak boleh lebih dari 20 karakter.',
+            'bank_name.string' => 'Nama bank harus berupa teks.',
+            'bank_name.max' => 'Nama bank tidak boleh lebih dari 50 karakter.',
+            'account_number.string' => 'Nomor rekening harus berupa teks.',
+            'account_number.max' => 'Nomor rekening tidak boleh lebih dari 50 karakter.',
+            'account_name.string' => 'Nama pemilik rekening harus berupa teks.',
+            'account_name.max' => 'Nama pemilik rekening tidak boleh lebih dari 100 karakter.',
+        ];
+    }
 }
