@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\API\Auth;
 
+use App\Helpers\LoginThrottle;
+use App\Rules\ReCaptcha;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LoginRequest extends FormRequest
@@ -21,10 +23,19 @@ class LoginRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'email' => 'required|string|email',
             'password' => 'required|string',
+            'captcha_token' => ['required', new ReCaptcha],
         ];
+
+        if (LoginThrottle::isSuspicious()) {
+            $rules['captcha_token'] = ['required', new ReCaptcha];
+        } else {
+            $rules['captcha_token'] = ['nullable'];
+        }
+
+        return $rules;
     }
 
     /**
@@ -38,6 +49,7 @@ class LoginRequest extends FormRequest
             'email.required' => 'Email wajib diisi.',
             'email.email' => 'Format email tidak valid.',
             'password.required' => 'Password wajib diisi.',
+            'captcha_token.required' => 'Keamanan mendeteksi aktivitas mencurigakan, mohon selesaikan Captcha.',
         ];
     }
 }

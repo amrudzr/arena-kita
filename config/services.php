@@ -42,4 +42,7 @@ return [
         'is_3ds' => env('MIDTRANS_IS_3DS', false),
     ],
 
+    'recaptcha' => [
+        'secret' => env('RECAPTCHA_SECRET_KEY'),
+    ],
 ];
