@@ -42,7 +42,7 @@ class DashboardController extends Controller
             return $this->sendSuccessWithData($data, 'Statistik admin berhasil diambil.');
 
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal mengambil statistik admin.', 500);
         }
     }
 }

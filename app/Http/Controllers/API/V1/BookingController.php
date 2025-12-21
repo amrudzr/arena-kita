@@ -30,7 +30,7 @@ class BookingController extends Controller
 
             return $this->sendSuccessWithData(BookingResource::collection($booking), 'Berhasil menampilkan booking.', 200);
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal mengambil daftar booking.', 500);
         }
     }
 
@@ -47,7 +47,7 @@ class BookingController extends Controller
 
             return $this->sendSuccessWithData(new BookingDetailResource($detail), 'Berhasil menampilkan detail booking.', 200);
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal mengambil detail booking.', 500);
         }
     }
 
@@ -58,7 +58,7 @@ class BookingController extends Controller
 
             return $this->sendSuccessWithData($booking, 'Booking berhasil ditambahkan.', 201);
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal menambahkan booking.', 500);
         }
     }
 }

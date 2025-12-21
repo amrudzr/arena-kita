@@ -38,7 +38,7 @@ class PricingSchemeController extends Controller
 
             return $this->sendSuccessWithData(new PricingSchemeResource($data), 'Skema harga berhasil dibuat.', 201);
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal membuat skema harga.', 500);
         }
     }
 
@@ -53,7 +53,7 @@ class PricingSchemeController extends Controller
 
             return $this->sendSuccess('Skema harga berhasil dihapus.');
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal menghapus skema harga.', 500);
         }
     }
 }

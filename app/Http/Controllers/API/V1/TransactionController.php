@@ -8,6 +8,7 @@ use App\Http\Resources\V1\TransactionResource;
 use App\Models\Booking;
 use App\Services\TransactionService;
 use App\Traits\ApiResponseTrait;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Midtrans\Config;
 
@@ -40,8 +41,8 @@ class TransactionController extends Controller
             $result = $this->transactionService->createTransaction($request->validated());
 
             return $this->sendSuccessWithData(new TransactionResource($result), 'Transaksi berhasil dibuat.', 201);
-        } catch (\Throwable $th) {
-            return $this->sendInternalError($th);
+        } catch (Exception $e) {
+            return $this->sendInternalError($e, 'Gagal membuat transaksi.', 500);
         }
     }
 }

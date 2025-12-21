@@ -79,7 +79,7 @@ class VenuePhotoController extends Controller
 
             return $this->sendSuccess('Foto venue berhasil dihapus.', 200);
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal menghapus foto venue.', 500);
         }
     }
 }

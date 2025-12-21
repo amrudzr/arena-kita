@@ -30,7 +30,7 @@ class UserController extends Controller
                 'Daftar user penyewa berhasil diambil.'
             );
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal mengambil daftar user penyewa.', 500);
         }
     }
 
@@ -55,7 +55,7 @@ class UserController extends Controller
                 'Detail user berhasil diambil.'
             );
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal mengambil detail user.', 500);
         }
     }
 
@@ -72,7 +72,7 @@ class UserController extends Controller
 
             return $this->sendSuccess('User berhasil dinonaktifkan.');
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal menonaktifkan user.', 500);
         }
     }
 }

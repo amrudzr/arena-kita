@@ -39,7 +39,7 @@ class BookingController extends Controller
                 'Daftar booking berhasil diambil.'
             );
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal mengambil daftar booking.', 500);
         }
     }
 
@@ -52,7 +52,7 @@ class BookingController extends Controller
         } catch (ValidationException $e) {
             return $this->sendError($e->getMessage(), $e->errors(), 422);
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal menyetujui booking.', 500);
         }
     }
 
@@ -65,7 +65,7 @@ class BookingController extends Controller
         } catch (ValidationException $e) {
             return $this->sendError($e->getMessage(), $e->errors(), 422);
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal menolak booking.', 500);
         }
     }
 }

@@ -37,18 +37,18 @@ class VenueController extends Controller
                 'Berhasil menampilkan daftar venue.'
             );
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal mengambil daftar venue.', 500);
         }
     }
 
     public function show(Venue $venue)
     {
         try {
-            $venue = $venue->with([
+            $venue->load([
                 'owner:id,full_name,email',
                 'venuePhoto',
                 'fields',
-            ])->find($venue);
+            ]);
 
             if (! $venue) {
                 return $this->sendError('Venue tidak ditemukan.', [], 404);
@@ -59,7 +59,7 @@ class VenueController extends Controller
                 'Detail venue berhasil diambil.'
             );
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal mengambil detail venue.', 500);
         }
     }
 
@@ -92,7 +92,7 @@ class VenueController extends Controller
                 'Venue berhasil diperbarui.'
             );
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal memperbarui venue.', 500);
         }
     }
 
@@ -103,7 +103,7 @@ class VenueController extends Controller
 
             return $this->sendSuccess('Venue berhasil dihapus.', 200);
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal menghapus venue.', 500);
         }
     }
 }

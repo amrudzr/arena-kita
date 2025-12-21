@@ -39,7 +39,7 @@ class DashboardController extends Controller
                 'Daftar booking dashboard berhasil diambil.'
             );
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal mengambil daftar booking dashboard.', 500);
         }
     }
 
@@ -50,7 +50,7 @@ class DashboardController extends Controller
 
             return $this->sendSuccessWithData(new DashboardStatResource($data), 'Statistik dashboard berhasil diambil.');
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal mengambil statistik dashboard.', 500);
         }
     }
 }

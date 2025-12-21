@@ -34,7 +34,7 @@ class TransactionController extends Controller
 
             return $this->sendSuccessWithData(TransactionResource::collection($transactions), 'Riwayat transaksi berhasil diambil.');
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal mengambil riwayat transaksi.', 500);
         }
     }
 }
