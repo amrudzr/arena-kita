@@ -16,21 +16,16 @@ class TransactionController extends Controller
     public function index(Request $request)
     {
         try {
-            // Pagination Dinamis
             $limit = $request->input('limit', 20);
             if ($limit > 100) {
                 $limit = 100;
             }
 
-            // Eager Loading Super Lengkap (N+1 Prevention)
-            // Transaction -> Booking -> Pricing -> Field -> Venue -> Owner
-            // Transaction -> Booking -> User
             $query = Transaction::with([
                 'booking.user',
                 'booking.pricingScheme.field.venue.owner',
             ])->latest();
 
-            // Filter by Status (Opsional)
             if ($request->has('status')) {
                 $query->where('payment_status', $request->status);
             }
@@ -43,7 +38,7 @@ class TransactionController extends Controller
             );
 
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal mengambil laporan transaksi global.', 500);
         }
     }
 }

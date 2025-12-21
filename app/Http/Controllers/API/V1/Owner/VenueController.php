@@ -66,7 +66,7 @@ class VenueController extends Controller
 
             return $this->sendSuccessWithData(new VenueResource($venue), 'Venue berhasil ditambahkan.', 201);
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal menambahkan venue.', 500);
         }
     }
 
@@ -83,7 +83,7 @@ class VenueController extends Controller
 
             return $this->sendSuccessWithData(new VenueResource($venue->refresh()), 'Venue berhasil diperbarui.', 200);
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal memperbarui venue.', 500);
         }
     }
 
@@ -100,7 +100,7 @@ class VenueController extends Controller
 
             return $this->sendSuccess('Venue berhasil dihapus.', 200);
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal menghapus venue.', 500);
         }
     }
 }

@@ -40,7 +40,7 @@ class OwnerController extends Controller
                 'Daftar owner berhasil diambil.'
             );
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal mengambil daftar owner.', 500);
         }
     }
 
@@ -55,7 +55,7 @@ class OwnerController extends Controller
                 201
             );
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal menambahkan owner.', 500);
         }
     }
 
@@ -69,7 +69,7 @@ class OwnerController extends Controller
                 'Detail owner berhasil diambil.'
             );
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal mengambil detail owner.', 500);
         }
     }
 
@@ -83,7 +83,7 @@ class OwnerController extends Controller
                 'Data owner berhasil diperbarui.'
             );
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal memperbarui data owner.', 500);
         }
     }
 
@@ -98,7 +98,7 @@ class OwnerController extends Controller
 
             return $this->sendSuccess('Owner berhasil dihapus.');
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal menghapus owner.', 500);
         }
     }
 }

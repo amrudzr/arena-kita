@@ -39,7 +39,7 @@ class FieldController extends Controller
 
             return $this->sendSuccessWithData(FieldResource::collection($query->get()), 'Berhasil menampilkan daftar lapangan.');
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal mengambil daftar lapangan.', 500);
         }
     }
 
@@ -67,7 +67,7 @@ class FieldController extends Controller
 
             return $this->sendSuccessWithData(new FieldResource($field), 'Lapangan berhasil ditambahkan.', 201);
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal menambahkan lapangan.', 500);
         }
     }
 
@@ -78,7 +78,7 @@ class FieldController extends Controller
 
             return $this->sendSuccessWithData(new FieldResource($field->refresh()), 'Data lapangan berhasil diperbarui.');
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal memperbarui data lapangan.', 500);
         }
     }
 
@@ -94,7 +94,7 @@ class FieldController extends Controller
 
             return $this->sendSuccess('Lapangan berhasil dihapus.');
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal menghapus lapangan.', 500);
         }
     }
 }

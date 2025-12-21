@@ -50,7 +50,7 @@ class FieldController extends Controller
             );
 
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal mengambil data ketersediaan jadwal.', 500);
         }
     }
 }

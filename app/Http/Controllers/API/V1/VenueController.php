@@ -41,7 +41,7 @@ class VenueController extends Controller
                 'Daftar venue berhasil diambil.'
             );
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal mengambil daftar venue.', 500);
         }
     }
 
@@ -59,7 +59,7 @@ class VenueController extends Controller
                 'Detail venue berhasil diambil.'
             );
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal mengambil detail venue.', 500);
         }
     }
 }

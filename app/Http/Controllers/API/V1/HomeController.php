@@ -70,7 +70,7 @@ class HomeController extends Controller
             return $this->sendSuccessWithData($data, 'Data beranda berhasil diambil.');
 
         } catch (Exception $e) {
-            return $this->sendInternalError($e);
+            return $this->sendInternalError($e, 'Gagal mengambil data beranda.', 500);
         }
     }
 }
